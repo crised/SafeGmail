@@ -1,9 +1,7 @@
 SafeGmail
 =========
 
-// Software released under GNU GENERAL PUBLIC LICENSE.
-
-// Collaborators are Welcome!
+Software released under GNU GENERAL PUBLIC LICENSE.
 
 Browser extension to provide easy to use PGP like encryption to Gmail� users.
 
@@ -42,3 +40,5 @@ Receiver flow
 3. Server side decryption logic to return decrypted message key to client side.
 
 4. AES JS decryption of the copied & pasted message.
+
+Collaborators are Welcome!
