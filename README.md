@@ -3,7 +3,7 @@ SafeGmail
 
 Software released under GNU GENERAL PUBLIC LICENSE.
 
-Browser extension to provide easy to use PGP like encryption to Gmail� users.
+Browser extension to provide easy to use PGP like encryption to Gmail users.
 
 This project consist in e-mail encryption in both client and safegmail server side.
 
