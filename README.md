@@ -2,6 +2,7 @@ SafeGmail
 =========
 
 // Software released under GNU GENERAL PUBLIC LICENSE.
+
 // Collaborators are Welcome!
 
 Browser extension to provide easy to use PGP like encryption to Gmail� users.
