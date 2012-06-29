@@ -7,6 +7,8 @@ Browser extension easy to use to provide PGP like encryption to Gmail� users.
 
 This project consist in e-mail encryption in both client and safegmail server side.
 
+PGP keys are handled by the server.
+
 Goals of the project are:
 
 1. Maximum security so message is never revealed to the server.
@@ -17,7 +19,7 @@ Goals of the project are:
 
 Flow Diagram: 
 
-SENDER FLOW
+Sender flow
 
 1. Generate AES message key at client side. 
 
@@ -29,7 +31,7 @@ SENDER FLOW
 
 4. Server side encryption for message key and recepient privatekey with hashed answer.
 
-RECEIVER FLOW
+Receiver flow
 
 1. Click on message link then answer question correctly in decryption webpage, then Copy & Paste e-mail body. 
 
