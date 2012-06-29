@@ -3,6 +3,12 @@
  */
 package com.illuminati.safemail.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
@@ -20,8 +26,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -42,12 +46,15 @@ import org.bouncycastle.jce.spec.ElGamalPublicKeySpec;
  * 
  */
 public class Util {
+
+	private static final SecureRandom random = new SecureRandom();
+
 	public static synchronized String decrypt(byte[] payload, PrivateKey key)
 			throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
 			BadPaddingException, NoSuchProviderException {
 		Cipher cipher = Cipher.getInstance("ElGamal/None/NoPadding", "BC");
-		cipher.init(Cipher.DECRYPT_MODE, key);
+		cipher.init(Cipher.DECRYPT_MODE, key, random);
 		byte[] cipherData = cipher.doFinal(payload);
 		return new String(cipherData);
 	}
@@ -62,22 +69,22 @@ public class Util {
 	 * @param hashedAnswer
 	 *            - answer used to generate the secret key
 	 * @return {@link PrivateKey} representing the passed <code>payload</code>
+	 * @throws ClassNotFoundException
+	 * @throws IOException
 	 */
 	public static synchronized ElGamalPrivateKey decryptPrivateKey(
-			byte[] encPrvKeyMod, byte[] encPrvKeyExp, byte[] hashedAnsBytes)
+			byte[] encPrvKey, byte[] hashedAnsBytes)
 			throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
-			BadPaddingException, NoSuchProviderException {
+			BadPaddingException, NoSuchProviderException, IOException,
+			ClassNotFoundException {
 		Cipher c = Cipher.getInstance("AES");
 		SecretKeySpec key = new SecretKeySpec(hashedAnsBytes, "SHA256");
 		c.init(Cipher.DECRYPT_MODE, key);
 
-		System.out.println(encPrvKeyMod.length);
-		System.out.println(encPrvKeyMod);
-		byte[] prvKeyMod = c.doFinal(encPrvKeyMod);
-		byte[] prvKeyExp = c.doFinal(encPrvKeyExp);
-		return generatePrivateKey(new BigInteger(prvKeyMod), new BigInteger(
-				prvKeyExp));
+		byte[] prvKey = c.doFinal(encPrvKey);
+		return (ElGamalPrivateKey) new ObjectInputStream(
+				new ByteArrayInputStream(prvKey)).readObject();
 	}
 
 	/**
@@ -100,27 +107,26 @@ public class Util {
 			IllegalBlockSizeException, BadPaddingException,
 			NoSuchProviderException {
 		Cipher cipher = Cipher.getInstance("ElGamal/None/NoPadding", "BC");
-		cipher.init(Cipher.ENCRYPT_MODE, key);
+		cipher.init(Cipher.ENCRYPT_MODE, key, random);
 		return cipher.doFinal(payload);
 	}
 
-	public static synchronized Map<String, byte[]> encryptPrivateKey(
+	public static synchronized byte[] encryptPrivateKey(
 			ElGamalPrivateKey privateKey, byte[] hashedAnsBytes)
 			throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
-			BadPaddingException, NoSuchProviderException {
+			BadPaddingException, NoSuchProviderException, IOException {
 		Cipher c = Cipher.getInstance("AES");
 		SecretKeySpec key = new SecretKeySpec(hashedAnsBytes, "SHA256");
 		c.init(Cipher.ENCRYPT_MODE, key);
 
-		Map<String, byte[]> encryptedPrivateKeyComps = new HashMap<String, byte[]>();
-		byte[] encryptedMod = c.doFinal(privateKey.getParameters().getP()
-				.toByteArray());
-		encryptedPrivateKeyComps.put("modulus", encryptedMod);
-		byte[] encryptedExp = c.doFinal(privateKey.getParameters().getG()
-				.toByteArray());
-		encryptedPrivateKeyComps.put("exponent", encryptedExp);
-		return encryptedPrivateKeyComps;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = new ObjectOutputStream(bos);
+		out.writeObject(privateKey);
+		out.close();
+		bos.close();
+		byte[] pvtKeyBytes = c.doFinal(bos.toByteArray());
+		return pvtKeyBytes;
 	}
 
 	// public static synchronized String encrypt(String payload, String

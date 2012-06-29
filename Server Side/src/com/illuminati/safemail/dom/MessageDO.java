@@ -1,11 +1,10 @@
 package com.illuminati.safemail.dom;
 
+
 public class MessageDO {
 	private String messageId;
 
-	private byte[] prvKeyMod;
-
-	private byte[] prvKeyExp;
+	private byte[] prvKey;
 
 	private byte[] messageKey;
 
@@ -25,12 +24,8 @@ public class MessageDO {
 		return messageKey;
 	}
 
-	public byte[] getPrvKeyExp() {
-		return prvKeyExp;
-	}
-
-	public byte[] getPrvKeyMod() {
-		return prvKeyMod;
+	public byte[] getPrvKey() {
+		return prvKey;
 	}
 
 	public String getQuestion() {
@@ -49,12 +44,8 @@ public class MessageDO {
 		this.messageKey = messageKey;
 	}
 
-	public void setPrvKeyExp(byte[] prvKeyExp) {
-		this.prvKeyExp = prvKeyExp;
-	}
-
-	public void setPrvKeyMod(byte[] prvKeyMod) {
-		this.prvKeyMod = prvKeyMod;
+	public void setPrvKey(byte[] prvKey) {
+		this.prvKey = prvKey;
 	}
 
 	public void setQuestion(String question) {

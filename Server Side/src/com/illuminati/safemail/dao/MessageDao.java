@@ -31,6 +31,6 @@ public interface MessageDao {
 	 * @param hashedAnswer
 	 */
 	public void store(String messageId, byte[] encryptedMessageKey,
-			byte[] encryptedPrivateMod, byte[] encryptedPrivateKeyExp,
-			byte[] hashedAnswer, String messageQuestion);
+			byte[] encryptedPrivateKey, byte[] hashedAnswer,
+			String messageQuestion);
 }

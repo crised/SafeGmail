@@ -4,7 +4,6 @@
 package com.illuminati.safemail.service;
 
 import java.text.Normalizer;
-import java.util.Map;
 
 import org.bouncycastle.jce.interfaces.ElGamalPrivateKey;
 import org.bouncycastle.jce.interfaces.ElGamalPublicKey;
@@ -78,8 +77,7 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		}
 		try {
 			ElGamalPrivateKey privateKey = Util.decryptPrivateKey(
-					messageDetails.getPrvKeyMod(), messageDetails
-							.getPrvKeyExp(), hashedAnswer);
+					messageDetails.getPrvKey(), hashedAnswer);
 			return Util.decrypt(messageDetails.getMessageKey(), privateKey);
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -104,13 +102,11 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		try {
 			byte[] encryptedMessageKey = Util.encryptMessage(messageKey
 					.getBytes(), puk);
-			Map<String, byte[]> encryptedPrivateKeyComps = Util
-					.encryptPrivateKey(pvk, hashedAnswer);
+			byte[] encryptedPrivateKey = Util.encryptPrivateKey(pvk,
+					hashedAnswer);
 			messageId = Util.getMessageId();
 			getMessageDao().store(messageId, encryptedMessageKey,
-					encryptedPrivateKeyComps.get("modulus"),
-					encryptedPrivateKeyComps.get("exponent"), hashedAnswer,
-					question);
+					encryptedPrivateKey, hashedAnswer, question);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -3,7 +3,9 @@
  */
 package com.illuminati.safemail.dao;
 
-import java.math.BigInteger;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +28,7 @@ public final class JdbcUserDaoImpl implements UserDao {
 	private void addUser(String userId, ElGamalPublicKey publicKey,
 			ElGamalPrivateKey privateKey) {
 		// check if user exists in database
-		String query = "INSERT INTO User (userId, pubMod, pubExp, prvMod, prvExp) VALUES (?, ?, ?, ?, ?)";
+		String query = "INSERT INTO User (userId, pubKey, prvKey) VALUES (?, ?, ?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -34,10 +36,8 @@ public final class JdbcUserDaoImpl implements UserDao {
 			con = Util.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, userId);
-			ps.setString(2, publicKey.getParameters().getP().toString());
-			ps.setString(3, publicKey.getParameters().getG().toString());
-			ps.setString(4, privateKey.getParameters().getP().toString());
-			ps.setString(5, privateKey.getParameters().getG().toString());
+			ps.setObject(2, publicKey);
+			ps.setObject(3, privateKey);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,12 +85,16 @@ public final class JdbcUserDaoImpl implements UserDao {
 				ps.setString(1, userId);
 				rs = ps.executeQuery();
 				if (rs.next()) {
-					BigInteger mod = new BigInteger(rs.getString("pubMod"));
-					BigInteger exp = new BigInteger(rs.getString("pubExp"));
-					return Util.generatePrivateKey(mod, exp);
+					byte[] pubKeyBytes = rs.getBytes("prvKey");
+					return (ElGamalPrivateKey) new ObjectInputStream(
+							new ByteArrayInputStream(pubKeyBytes)).readObject();
 				}
 			} catch (SQLException se) {
 				se.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			} finally {
 				// close the connection
 				if (rs != null) {
@@ -154,12 +158,16 @@ public final class JdbcUserDaoImpl implements UserDao {
 				ps.setString(1, userId);
 				rs = ps.executeQuery();
 				if (rs.next()) {
-					BigInteger mod = new BigInteger(rs.getString("pubMod"));
-					BigInteger exp = new BigInteger(rs.getString("pubExp"));
-					return Util.generatePublicKey(mod, exp);
+					byte[] pubKeyBytes = rs.getBytes("pubKey");
+					return (ElGamalPublicKey) new ObjectInputStream(
+							new ByteArrayInputStream(pubKeyBytes)).readObject();
 				}
 			} catch (SQLException se) {
 				se.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			} finally {
 				// close the connection
 				if (rs != null) {

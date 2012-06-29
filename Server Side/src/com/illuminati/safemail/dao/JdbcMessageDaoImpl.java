@@ -35,8 +35,7 @@ public final class JdbcMessageDaoImpl implements MessageDao {
 			if (rs.next()) {
 				message = new MessageDO();
 				message.setMessageId(messageId);
-				message.setPrvKeyExp(rs.getBytes("prvKeyExp"));
-				message.setPrvKeyMod(rs.getBytes("prvKeyMod"));
+				message.setPrvKey(rs.getBytes("prvKey"));
 				message.setMessageKey(rs.getBytes("messageKey"));
 				message.setQuestion(rs.getString("question"));
 				message.setAnswer(rs.getBytes("answer"));
@@ -96,10 +95,10 @@ public final class JdbcMessageDaoImpl implements MessageDao {
 	}
 
 	public void store(String messageId, byte[] encryptedMessageKey,
-			byte[] encryptedPrivateKeyMod, byte[] encryptedPrivateKeyExp,
-			byte[] hashedAnswer, String messageQuestion) {
+			byte[] encryptedPrivateKey, byte[] hashedAnswer,
+			String messageQuestion) {
 		// check if user exists in database
-		String query = "INSERT INTO Message (messageId, prvKeyMod, prvKeyExp, messageKey, question, answer) VALUES (?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Message (messageId, prvKey, messageKey, question, answer) VALUES (?, ?, ?, ?, ?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -107,11 +106,10 @@ public final class JdbcMessageDaoImpl implements MessageDao {
 			con = Util.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, messageId);
-			ps.setBytes(2, encryptedPrivateKeyMod);
-			ps.setBytes(3, encryptedPrivateKeyExp);
-			ps.setBytes(4, encryptedMessageKey);
-			ps.setString(5, messageQuestion);
-			ps.setBytes(6, hashedAnswer);
+			ps.setBytes(2, encryptedPrivateKey);
+			ps.setBytes(3, encryptedMessageKey);
+			ps.setString(4, messageQuestion);
+			ps.setBytes(5, hashedAnswer);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
