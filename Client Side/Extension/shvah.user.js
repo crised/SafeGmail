@@ -607,7 +607,7 @@ function putButtons() {
 		}
 	}	
 
-	var htmlString = '<tr><td colspan="3"><table id="q_and_a"><tr><td colspan="2">Type a secret question and answer that can only be answered by the recepient</td></tr>        <tr><td>Question</td><td><input type="text" name="question" style="width:100%" /></td></tr>        <tr><td>Answer</td><td><input type="text" name="question" style="width:100%" /></td></tr></table></td></tr><tr id="encryptdiv"><td class="eD">Encrypted</td><td><input type="checkbox" name="boom" id="boom" style="margin-right:5px;" /></td><td></td></tr>';
+	var htmlString = '<tr><td colspan="3"><table id="q_and_a"><tr><td colspan="2">Type a secret question and answer that can only be answered by the recipient</td></tr>        <tr><td>Question</td><td><input type="text" name="question" style="width:100%" /></td></tr>        <tr><td>Answer</td><td><input type="text" name="question" style="width:100%" /></td></tr></table></td></tr><tr id="encryptdiv"><td class="eD">Encrypted</td><td><input type="checkbox" name="boom" id="boom" style="margin-right:5px;" /></td><td></td></tr>';
 	
 	bonzo(sendrow.parentNode.parentNode).after(htmlString);
     var boom = (new Selector('#boom').exec(place))[0];
