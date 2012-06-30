@@ -5,15 +5,7 @@ window.onload = function()
      buttonnode.setAttribute("id","tempBtn");
      buttonnode.setAttribute("name","encrypt");
      buttonnode.setAttribute("value","encrypt");
-     addEventToButton(buttonnode, onBtnClick);
-     document.body.appendChild(buttonnode);
-     
-     buttonnode = document.createElement("input");
-     buttonnode.setAttribute("type","button");
-     buttonnode.setAttribute("id","tempBtn1");
-     buttonnode.setAttribute("name","decrypt");
-     buttonnode.setAttribute("value","decrypt");
-     addEventToButton(buttonnode, onBtnClick1);
+     addEventToButton(buttonnode, encryptBtnClick);
      document.body.appendChild(buttonnode);
      
      buttonnode = document.createElement("textarea");
@@ -27,14 +19,8 @@ window.onload = function()
      buttonnode.setAttribute("type","textAreaE");
      buttonnode.setAttribute("id","textAreaE");
      buttonnode.setAttribute("rows",5);
-     buttonnode.setAttribute("cols",50);
-     document.body.appendChild(buttonnode);
-     
-     buttonnode = document.createElement("textarea");
-     buttonnode.setAttribute("type","textAreaD");
-     buttonnode.setAttribute("id","textAreaD");
-     buttonnode.setAttribute("rows",5);
-     buttonnode.setAttribute("cols",50);
+     buttonnode.setAttribute("cols",80);
+     buttonnode.setAttribute("readonly","readonly");
      document.body.appendChild(buttonnode);
 }
 
@@ -50,25 +36,35 @@ function addEventToButton(button, fn)
      }
 }
 
-var messageKey;
-function onBtnClick(e)
+function encryptBtnClick(e)
 {
-     var el = document.getElementById("textAreaS");
-     window.event.cancelBubble = true;
-     messageKey = Generate_key();
-     textAreaE.value = CryptoJS.AES.encrypt(el.value, messageKey);
-     
+     var messageKey = Generate_key();
+		
      //AJAX CALL
      var http = new XMLHttpRequest();
      var url = "http://localhost:8080/SafeMail/MessageController?action=send";
      http.onreadystatechange = function() 
      {
-     	if(http.readyState == 4)	
-     	//&& http.status == 200)
+     	if(http.readyState == 4)
      	{
-     	    alert("Response is : "+http.responseText);
-     	}
-     	alert(http.readyState + " status --> "+http.status);
+     	    if(http.status == 200)
+     	    {
+     	    	alert("Encryption done successfully.");
+     	    	var mailEncryptedText = "Your mail content is encrypted\n";
+     	    	mailEncryptedText+= "Please click on following link to access the mail - ";
+     	    	mailEncryptedText+= "http://localhost:8080/SafeMail/MessageController?action=getQuestion&messageId="+http.responseText;
+     	    	mailEncryptedText+= "\n\nEncrypted mail is";
+     	    	mailEncryptedText+= "===================================\n\n";
+     	    	var el = document.getElementById("textAreaS");
+     		mailEncryptedText+= CryptoJS.AES.encrypt(el.value, messageKey);
+     		mailEncryptedText+= "\n===================================";
+     	    	textAreaE.value = mailEncryptedText;
+	    }
+     	    else
+     	    {
+     	    	alert("Error while encryption.");
+     	    }
+     	 }
      }
      //Prepare prams for sending to server 
      var params = "messageKey="+encodeURIComponent(messageKey);
@@ -76,49 +72,10 @@ function onBtnClick(e)
      params += "&question="+encodeURIComponent("Which country are you from");
      params += "&answer="+encodeURIComponent("India");
      
+     http.async = false;
      //Send the request
      http.open("POST", url, true);
      http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
      
      http.send(params);
-}
-
-function onBtnClick1(e)
-{
-     //var el = document.getElementById("textAreaE");
-     //window.event.cancelBubble = true;
-     //var text = CryptoJS.AES.decrypt(el.value, messageKey);
-     //textAreaD.value = hex2a(text.toString());
-
-     //AJAX CALL
-     var http = new XMLHttpRequest();
-     var url = "http://localhost:8080/SafeMail/MessageController?action=receive";
-     http.onreadystatechange = function() 
-     {
-     	if(http.readystate == 4 && http.status == 200)
-     	{
-     	    alert(http.responseText);
-     	}
-     	alert(http.readyState);
-     }
-     //Prepare prams for sending to server 
-     var params = "messageId="+encodeURIComponent("3494d4dc-4c65-42e8-89ec-0274fa496999");
-     params += "&userAnswer="+encodeURIComponent("India");
-     
-     //Send the request
-     http.open("POST", url, true);
-     http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-     
-     http.send(params);
-}
-
-function hex2a(hex)
-{
-     var str = '';
-     for (var id=0;i < hex.length; i+=2)
-     {	
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16)); 
-     }
-     return str;
-}
-     
+}     
