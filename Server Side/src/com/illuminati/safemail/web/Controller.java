@@ -38,6 +38,7 @@ public final class Controller extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		performAction(request, response);
 	}
 
@@ -65,15 +66,22 @@ public final class Controller extends HttpServlet {
 			response.getWriter().write(messageId);
 		} else if ("getQuestion".equals(action)) {
 			String messageId = request.getParameter("messageId");
-			String question = service.getQuestion(messageId);
-			response.getWriter().write(question);
+			request.getSession().setAttribute("messageId", messageId);
+			request.setAttribute("messageQuestion", service
+					.getQuestion(messageId));
+			request.getRequestDispatcher("jsp/MessageQuestion.jsp").forward(
+					request, response);
 		} else if ("receive".equals(action)) {
 			String userAnswer = request.getParameter("userAnswer");
-			String messageId = request.getParameter("messageId");
-			String encryptedMessage = service.receive(userAnswer, messageId);
-			response.getWriter().write(encryptedMessage);
+			String messageId = request.getSession().getAttribute("messageId")
+					.toString();
+			request.setAttribute("messageKey", service.receive(userAnswer,
+					messageId));
+			request.getRequestDispatcher("jsp/MailContent.jsp").forward(
+					request, response);
 		} else {
 			throw new UnsupportedOperationException("Operation not supported");
 		}
+		response.getWriter().flush();
 	}
 }

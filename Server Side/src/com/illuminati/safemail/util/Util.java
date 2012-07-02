@@ -10,10 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
@@ -22,7 +20,6 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -36,10 +33,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.interfaces.ElGamalPrivateKey;
-import org.bouncycastle.jce.interfaces.ElGamalPublicKey;
-import org.bouncycastle.jce.spec.ElGamalParameterSpec;
-import org.bouncycastle.jce.spec.ElGamalPrivateKeySpec;
-import org.bouncycastle.jce.spec.ElGamalPublicKeySpec;
 
 /**
  * @author Avi
@@ -97,10 +90,6 @@ public class Util {
 	 *            - answer used to generate the secret key
 	 * @return String representing the encrypted <code>pvk</code>
 	 */
-	// public static String encrypt(PrivateKey pvk, String hashedAnswer) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
 	public static synchronized byte[] encryptMessage(byte[] payload,
 			PublicKey key) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException,
@@ -129,19 +118,6 @@ public class Util {
 		return pvtKeyBytes;
 	}
 
-	// public static synchronized String encrypt(String payload, String
-	// messageKey)
-	// throws NoSuchAlgorithmException, NoSuchPaddingException,
-	// InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-	//
-	// byte[] dataToEncrypt = payload.getBytes();
-	// Cipher c = Cipher.getInstance("AES");
-	// SecretKeySpec key = new SecretKeySpec(messageKey.getBytes(), "AES");
-	// c.init(Cipher.ENCRYPT_MODE, key);
-	// byte[] encryptedData = c.doFinal(dataToEncrypt);
-	// return new String(encryptedData);
-	// }
-	//
 	public static synchronized KeyPair generateKeys()
 			throws NoSuchAlgorithmException, NoSuchProviderException,
 			InvalidAlgorithmParameterException {
@@ -151,48 +127,6 @@ public class Util {
 		generator.initialize(512, random);
 		KeyPair keyPair = generator.generateKeyPair();
 		return keyPair;
-	}
-
-	public static synchronized ElGamalPrivateKey generatePrivateKey(
-			BigInteger mod, BigInteger exp) {
-		ElGamalParameterSpec prmSpec = new ElGamalParameterSpec(mod, exp);
-		// ElGamalKeySpec spec = new ElGamalKeySpec(prmSpec);
-		BigInteger g = new BigInteger(
-				"153d5d6172adb43045b68ae8e1de1070b6137005686d29d3d73a7749199681ee5b212c9b96bfdcfa5b20cd5e3fd2044895d609cf9b410b7a0f12ca1cb9a428cc",
-				16);
-		ElGamalPrivateKeySpec spec = new ElGamalPrivateKeySpec(g, prmSpec);
-		try {
-			KeyFactory factory = KeyFactory.getInstance("ELGAMAL", "BC");
-			return (ElGamalPrivateKey) factory.generatePrivate(spec);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static synchronized ElGamalPublicKey generatePublicKey(
-			BigInteger mod, BigInteger exp) {
-		ElGamalParameterSpec prmSpec = new ElGamalParameterSpec(mod, exp);
-		// ElGamalKeySpec spec = new ElGamalKeySpec(prmSpec);
-		BigInteger g = new BigInteger(
-				"153d5d6172adb43045b68ae8e1de1070b6137005686d29d3d73a7749199681ee5b212c9b96bfdcfa5b20cd5e3fd2044895d609cf9b410b7a0f12ca1cb9a428cc",
-				16);
-		ElGamalPublicKeySpec spec = new ElGamalPublicKeySpec(g, prmSpec);
-		try {
-			KeyFactory factory = KeyFactory.getInstance("ELGAMAL", "BC");
-			return (ElGamalPublicKey) factory.generatePublic(spec);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public static Connection getConnection() throws SQLException {

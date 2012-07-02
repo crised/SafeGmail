@@ -79,6 +79,8 @@ public final class JdbcUserDaoImpl implements UserDao {
 			Connection con = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
+			ObjectInputStream stream = null;
+			ByteArrayInputStream byteArrayStream = null;
 			try {
 				con = Util.getConnection();
 				ps = con.prepareStatement(query);
@@ -86,8 +88,9 @@ public final class JdbcUserDaoImpl implements UserDao {
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					byte[] pubKeyBytes = rs.getBytes("prvKey");
-					return (ElGamalPrivateKey) new ObjectInputStream(
-							new ByteArrayInputStream(pubKeyBytes)).readObject();
+					byteArrayStream = new ByteArrayInputStream(pubKeyBytes);
+					stream = new ObjectInputStream(byteArrayStream);
+					return (ElGamalPrivateKey) stream.readObject();
 				}
 			} catch (SQLException se) {
 				se.printStackTrace();
@@ -96,6 +99,21 @@ public final class JdbcUserDaoImpl implements UserDao {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} finally {
+				if (byteArrayStream != null) {
+					try {
+						byteArrayStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (stream != null) {
+					try {
+						stream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
 				// close the connection
 				if (rs != null) {
 					try {
@@ -152,6 +170,9 @@ public final class JdbcUserDaoImpl implements UserDao {
 			Connection con = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
+			ObjectInputStream stream = null;
+			ByteArrayInputStream byteArrayStream = null;
+
 			try {
 				con = Util.getConnection();
 				ps = con.prepareStatement(query);
@@ -159,8 +180,9 @@ public final class JdbcUserDaoImpl implements UserDao {
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					byte[] pubKeyBytes = rs.getBytes("pubKey");
-					return (ElGamalPublicKey) new ObjectInputStream(
-							new ByteArrayInputStream(pubKeyBytes)).readObject();
+					byteArrayStream = new ByteArrayInputStream(pubKeyBytes);
+					stream = new ObjectInputStream(byteArrayStream);
+					return (ElGamalPublicKey) stream.readObject();
 				}
 			} catch (SQLException se) {
 				se.printStackTrace();
@@ -169,6 +191,21 @@ public final class JdbcUserDaoImpl implements UserDao {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} finally {
+				if (byteArrayStream != null) {
+					try {
+						byteArrayStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (stream != null) {
+					try {
+						stream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
 				// close the connection
 				if (rs != null) {
 					try {

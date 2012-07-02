@@ -71,8 +71,10 @@ public final class JdbcMessageDaoImpl implements MessageDao {
 			con = Util.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, messageId);
-			ResultSet resultSet = ps.executeQuery(query);
-			return resultSet.getString("question");
+			ResultSet resultSet = ps.executeQuery();
+			if (resultSet.next()) {
+				return resultSet.getString("question");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
