@@ -3,7 +3,7 @@
   "version": "1.0",
   "content_scripts": [
     {
-      "matches": ["https://www.google.co.in/**"],
+      "matches": ["*//mail.google.com/mail/*"],
       "js": ["cryptography.js","/cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
     }
   ]
