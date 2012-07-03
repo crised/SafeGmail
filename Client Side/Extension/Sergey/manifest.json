@@ -1,0 +1,10 @@
+{
+  "name": "Safe Gmail",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["*://mail.google.com/mail/*"],
+      "js": ["shvah.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
+    }
+  ]
+}
