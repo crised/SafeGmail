@@ -10,3 +10,5 @@ Make a blog to get feedback from our users.
 2. Set up VPS. 
 
 3. SSL Certificate for VPS.
+
+4. Upload it to SourceForge
