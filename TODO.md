@@ -3,14 +3,16 @@ SafeGmail
 
 Things left to do:
 
-1. Small Wordpress Website: 
+1. Small HTML&CSS Website: 
 Show images of the process of sending an encrypted e-mail.
-We can make use of the blog of SourceForge. 
+We can make use of the blog of SourceForge.
 
-2. Set up VPS. 
+2. Add PASSWORD to make AJAX calls.
 
-3. SSL Certificate for VPS.
+3. Set up Tomcat & Extension to handle SSL. 
 
-4. Upload it to SourceForge.
+4. SSL Certificate for VPS.
 
-5. Make a simple logo.
+5. Upload it to SourceForge.
+
+6. Make a simple logo.
