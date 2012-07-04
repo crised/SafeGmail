@@ -70,7 +70,7 @@ function putButtons() {
 
     //Find the Send button
     var sendrow = getElementsByAttribute(theframe, "input", "name", "subject");
-    var buttonSend = getElementsByAttribute(theframe, "div", "id", ":nd");
+    var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
 
     //If we don't find the row with the Send button on it then wait for a second
     //and try again
