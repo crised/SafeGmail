@@ -22,3 +22,5 @@ We can make use of the blog of SourceForge.
 8. Progress bar on client extension.
 
 9. Handle errors on decryption webpage e.g. "you should not enter the dashes".
+
+10. Handle browser extension updates.
