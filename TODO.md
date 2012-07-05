@@ -16,3 +16,9 @@ We can make use of the blog of SourceForge.
 5. Upload it to SourceForge.
 
 6. Make a simple logo.
+
+7. Canon the answer on client side. 
+
+8. Progress bar on client extension.
+
+9. Handle errors on decryption webpage e.g. "you should not enter the dashes".
