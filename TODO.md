@@ -24,3 +24,4 @@ We can make use of the blog of SourceForge.
 9. Handle errors on decryption webpage e.g. "you should not enter the dashes".
 
 10. Handle browser extension updates.
+http://code.google.com/chrome/extensions/autoupdate.html
