@@ -4,7 +4,7 @@
   "content_scripts": [
     {
       "matches": ["*://mail.google.com/mail/*"],
-      "js": ["shvah.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
+      "js": ["lib/bootstrap.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
     }
   ]
 }
