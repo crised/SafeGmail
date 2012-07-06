@@ -10,6 +10,14 @@
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>com.illuminati.safemail.web.Controller</servlet-class>
 		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>sysuser</param-name>
+			<param-value>safegmailsysuser</param-value>
+		</init-param>
+		<init-param>
+			<param-name>syspass</param-name>
+			<param-value>testpass</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>

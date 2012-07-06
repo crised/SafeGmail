@@ -53,6 +53,23 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		return userDao;
 	}
 
+	public boolean isValidAnswer(String ans, String messageId) {
+		MessageDO messageDetails = getMessageDao().getMessageById(messageId);
+		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
+		byte[] hashedAnswer = Util.hash(answer);
+		// Verifying if correct answer is entered by user or not.
+		if (hashedAnswer.length == messageDetails.getAnswer().length) {
+			for (int count = 0; count < messageDetails.getAnswer().length; count++) {
+				if (hashedAnswer[count] != messageDetails.getAnswer()[count]) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,17 +81,7 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		MessageDO messageDetails = getMessageDao().getMessageById(messageId);
 		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
 		byte[] hashedAnswer = Util.hash(answer);
-
 		// Verifying if correct answer is entered by user or not.
-		if (hashedAnswer.length == messageDetails.getAnswer().length) {
-			for (int count = 0; count < messageDetails.getAnswer().length; count++) {
-				if (hashedAnswer[count] != messageDetails.getAnswer()[count]) {
-					throw new RuntimeException("Answer entered doesn't match.");
-				}
-			}
-		} else {
-			throw new RuntimeException("Answer entered doesn't match.");
-		}
 		try {
 			ElGamalPrivateKey privateKey = Util.decryptPrivateKey(
 					messageDetails.getPrvKey(), hashedAnswer);

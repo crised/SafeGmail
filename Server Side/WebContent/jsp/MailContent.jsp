@@ -5,52 +5,85 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Mail Content</title>
+<link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
+<link rel="shortcut icon" href="jsp/img/icon.png">
 </head>
-<script src="jsp/cryptojs/rollups/aes.js" type="text/javascript"></script>
+	<script src="jsp/cryptojs/rollups/aes.js" type="text/javascript"></script>
+	<script>
+		function showMailClickHandler()
+		{
+			<% String reqMessageKey = request.getAttribute("messageKey").toString(); %>
+		     var eText = document.getElementById("encryptedMailTxt");
+		     var messageKey = '<%=reqMessageKey%>';
+		     var text = CryptoJS.AES.decrypt(eText.value, messageKey);
+		     decryptedMailTxt.value = hex2a(text.toString());
 
-<script>
-	function showMailClickHandler()
-	{
-		<% String reqMessageKey = request.getAttribute("messageKey").toString(); %>
-	     var eText = document.getElementById("encryptedMailTxt");
-	     var messageKey = '<%=reqMessageKey%>';
-	     var text = CryptoJS.AES.decrypt(eText.value, messageKey);
-	     decryptedMailTxt.value = hex2a(text.toString());
-	}
-	function hex2a(hex)
-	{
-	     var str = '';
-	     for (var i=0;i < hex.length; i+=2)
-	     {	
-	        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16)); 
-	     }
-	     return str;
-	}
-</script>
-	<body>
-		<h1>Please copy-paste the encrypted message content from GMail in the first text area and "Show Content"</h1>
-		<table>
-			<tr>
-				<td>
-					<label><b>Paste your encrypted text here</b></label>
-				</td>
-				<td>
-					<textarea rows="15" cols="120" id="encryptedMailTxt"></textarea>
-				</td>	
-			</tr>
-			<tr>
-				<td colspan="2" align="center"> 
-					<input type="button" value="Show Mail Content" onclick="showMailClickHandler()"/>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label><b>Mail Content:</b></label>
-				</td>
-				<td>
-					<textarea rows="15" cols="120" id="decryptedMailTxt" readonly="readonly"></textarea>
-				</td>
-			</tr>
-		</table>
+			 showEncryptedDiv(false);
+		}
+		
+		function hex2a(hex)
+		{
+		     var str = '';
+		     for (var i=0;i < hex.length; i+=2)
+		     {	
+		        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16)); 
+		     }
+		     return str;
+		}
+
+		function showEncryptedDiv(showEncrypted)
+		{
+		     var decryptedMailDiv = document.getElementById("decryptedMail");
+		     var encryptedMailDiv = document.getElementById("encryptedMail");
+			 if(showEncrypted == true)
+			 {
+		     	decryptedMailDiv.style.display = "none";
+		     	encryptedMailDiv.style.display = "block";
+			 }	
+			 else
+			 {
+		     	decryptedMailDiv.style.display = "block";
+		     	encryptedMailDiv.style.display = "none";
+			 }
+		}
+		
+		function hideDecryptedMail()
+		{
+			document.getElementById("decryptedMail").style.display = "none";
+		}
+	</script>
+	<body onload="hideDecryptedMail()">
+		<!-- Header -->
+		<div id="header">
+	      <div id="logo">
+	        <div id="logo_text">
+	          <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
+	          <h2>PGP encryption for Gmail.</h2>
+	        </div>
+	      </div>
+	    </div>
+		
+		<!-- Content -->
+		<div id="content_header">
+    		<div id="site_content1">
+    			<div id="content">
+    				<h1>Mail Decryption</h1>
+					<div id="encryptedMail">
+						<label><b>Please copy-paste the encrypted message content from GMail below</b></label><br>
+						<textarea rows="22" cols="120" id="encryptedMailTxt"></textarea><br>
+						<div align="center">
+							<input type="button" value="Show My Mail" onclick="showMailClickHandler()"/>
+						</div>
+					</div>
+					<div id="decryptedMail">
+						<label><b>Mail Content:</b></label><br>
+						<div align="center">
+							<textarea rows="22" cols="120" id="decryptedMailTxt" readonly="readonly"></textarea>
+							<input type="button" value="Back To Encrypted Text" onclick="showEncryptedDiv(true)"/>
+						</div>	
+					</div>	
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

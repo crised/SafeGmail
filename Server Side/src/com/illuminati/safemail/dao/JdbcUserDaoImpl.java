@@ -25,8 +25,8 @@ import com.illuminati.safemail.util.Util;
  * 
  */
 public final class JdbcUserDaoImpl implements UserDao {
-	private void addUser(String userId, ElGamalPublicKey publicKey,
-			ElGamalPrivateKey privateKey) {
+	private synchronized void addUser(String userId,
+			ElGamalPublicKey publicKey, ElGamalPrivateKey privateKey) {
 		// check if user exists in database
 		String query = "INSERT INTO User (userId, pubKey, prvKey) VALUES (?, ?, ?)";
 		Connection con = null;
@@ -250,7 +250,7 @@ public final class JdbcUserDaoImpl implements UserDao {
 		return null;
 	}
 
-	private boolean userExists(String userId) {
+	private synchronized boolean userExists(String userId) {
 		// check if user exists in database
 		String query = "select * from User where userId = ?";
 		Connection con = null;

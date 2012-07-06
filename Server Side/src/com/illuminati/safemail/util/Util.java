@@ -132,8 +132,8 @@ public class Util {
 	public static Connection getConnection() throws SQLException {
 		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 		String user = "root";
-		String password = "123456";
-		String url = "jdbc:mysql://localhost/safemail";
+		String password = "new.Venture.mysql";
+		String url = "jdbc:mysql://localhost/safemail?useUnicode=yes&characterEncoding=UTF-8";
 		return DriverManager.getConnection(url, user, password);
 	}
 
