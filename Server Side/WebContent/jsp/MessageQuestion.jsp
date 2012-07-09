@@ -20,7 +20,7 @@
     <div id="content_header"></div>
     <div id="site_content">
     	<div id="content">
-			<form name="inputForm" action="http://66.175.220.76:8080/SafeMail/MessageController?action=receive" 
+			<form name="inputForm" action="MessageController?action=receive" 
 						method="post">
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">

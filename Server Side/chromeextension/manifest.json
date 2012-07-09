@@ -3,8 +3,8 @@
   "version": "1.0",
   "content_scripts": [
     {
-      "matches": ["http://www.google.com/**"],
-      "js": ["cryptography.js","/cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
+      "matches": ["*://mail.google.com/mail/*"],
+      "js": ["safegmailbootstrap.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
     }
   ]
 }

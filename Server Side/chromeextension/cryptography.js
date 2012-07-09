@@ -42,7 +42,7 @@ function encryptBtnClick(e)
 		
      //AJAX CALL
      var http = new XMLHttpRequest();
-     var url = "http://66.175.220.76:8080/SafeMail/MessageController?action=send";
+     var url = "http://localhost:8080/SafeMail/MessageController?action=send";
      http.onreadystatechange = function() 
      {
      	if(http.readyState == 4)
@@ -52,7 +52,7 @@ function encryptBtnClick(e)
      	    	alert("Encryption done successfully.");
      	    	var mailEncryptedText = "Your mail content is encrypted\n";
      	    	mailEncryptedText+= "Please click on following link to access the mail - ";
-     	    	mailEncryptedText+= "http://66.175.220.76:8080/SafeMail/MessageController?action=getQuestion&messageId="+http.responseText;
+     	    	mailEncryptedText+= "http://localhost:8080/SafeMail/MessageController?action=getQuestion&messageId="+http.responseText;
      	    	mailEncryptedText+= "\n\nEncrypted mail is";
      	    	mailEncryptedText+= "===================================\n\n";
      	    	var el = document.getElementById("textAreaS");

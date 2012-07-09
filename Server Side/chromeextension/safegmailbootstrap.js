@@ -1,7 +1,5 @@
-window.onload = function()
-{
-    init(); 
-};
+//Initializes this script
+init();
 
 function init() 
 {
@@ -53,10 +51,11 @@ function getElementsByAttribute(oElm, strTagName, strAttributeName, strAttribute
     return arrReturnElements[0];
 }
 
-function putButtons() {
-    //Find the Send button
-    if(!theframe.getElementById('encript'))
-    {
+function putButtons() 
+{
+  //Find the Send button
+  if(!theframe.getElementById('encript'))
+  {
     
     var composeBtn = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji L3 T-I-ax7");
     
@@ -67,8 +66,7 @@ function putButtons() {
     //If we don't find the row with the Send button on it then wait for a second
     //and try again
     if (!sendrow || !buttonSend) {
-        window.setTimeout(putButtons, 1000);
-    	return;    
+        return;    
     }
     
     trackURL = false;
@@ -186,21 +184,20 @@ function encryptBtnClick(e)
         
         //AJAX CALL
         var http = new XMLHttpRequest();
-        var url = "http://192.168.1.190:8080/SafeMail/MessageController?action=send";
+        var url = "http://www.safegmail.com:8080/SafeMail/MessageController?action=send";
 	var result = true;
 			
         http.onreadystatechange = function() 
         {
-            if (http.readyState == 4) {
-                if (http.status == 200) {
-                    var safemaillink = document.execCommand("CreateLink", false, "http://www.safemail.com");	
-                    alert(safemaillink);
-                
-                    var hrefURL = "http://192.168.1.190:8080/SafeMail/MessageController?action=getQuestion&messageId=" + http.responseText
+            if (http.readyState == 4) 
+            {
+                if (http.status == 200) 
+                {
+                    var hrefURL = "http://www.safegmail.com:8080/SafeMail/MessageController?action=getQuestion&messageId=" + http.responseText
                     var mailEncryptedText = "Your mail content is encrypted\n";
                     mailEncryptedText += "Click ";
                     
-                    mailEncryptedText += " <a href='"+hrefURL+"'>Here</a> to access the mail content.";
+                    mailEncryptedText += " "+hrefURL+" to access the mail content.";
                     mailEncryptedText += "\n\nEncrypted mail is";
                     mailEncryptedText += "===================================\n\n";
                     mailEncryptedText += CryptoJS.AES.encrypt(bodyText, messageKey);
@@ -209,15 +206,13 @@ function encryptBtnClick(e)
                     textframe.body.innerText = mailEncryptedText;
                     alert("Encryption done successfully.");
 	        } else {
-	            alert("Error while encryption."+http.readyState+" "+http.status);
+	            alert("Error while encryption.");
 		    result = false;
                 }
+                displaySavingGmailDiv("Encrypting...", false);
             }
-			//spinner.stop();
-			//qwestion.disabled = false;
-			//answer.disabled = false; 
-			//checkbox.disabled = false;
-        };
+            
+	};
         //Prepare prams for sending to server 
 
 
@@ -226,12 +221,30 @@ function encryptBtnClick(e)
         http.open("POST", url, true);
         http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
+	displaySavingGmailDiv("Encrypting...", true);
         http.send(params);
 	return result;
     }
 }     
 
-
+function displaySavingGmailDiv(savingMessage, show)
+{
+   if(show == true)
+   {
+      var messageSpan = "<div id='innerc' style='position:absolute; top:50%; left: 40%; height:10em; margin-top:-5em'><font color='0xffffff' size='22' weight='bold'>"+savingMessage+"</font></div>";
+      var freezeDiv = document.createElement("div");
+      freezeDiv.innerHTML = messageSpan;
+      freezeDiv.setAttribute("align", "center");
+      freezeDiv.id = "freezeDiv";
+      freezeDiv.style.cssText = "display:table-cell; vertical-align: middle; position:absolute; top:0; right:0; width:" + screen.width + "px; height:" + screen.height + "px; background-color: #000000; opacity:0.5; filter:alpha(opacity=50)";    
+      document.getElementsByTagName("body")[0].appendChild(freezeDiv );
+   }
+   else
+   {
+      var freezeDiv = document.getElementById("freezeDiv");
+      document.getElementsByTagName("body")[0].removeChild(freezeDiv );
+   }
+}
 
 ////////////////////////////////////////////////////////////////////
 /////////////////Util methods///////////////////////////////////////
