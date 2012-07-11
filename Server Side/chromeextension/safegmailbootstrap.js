@@ -57,9 +57,6 @@ function putButtons()
   if(!theframe.getElementById('encript'))
   {
     
-    var composeBtn = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji L3 T-I-ax7");
-    
-    
     var sendrow = getElementsByAttribute(theframe, "input", "name", "subject");
     var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
     	
@@ -193,17 +190,32 @@ function encryptBtnClick(e)
             {
                 if (http.status == 200) 
                 {
+                    removeAllChildrenOfNode(textframe.body);
+                
                     var hrefURL = "http://www.safegmail.com:8080/SafeMail/MessageController?action=getQuestion&messageId=" + http.responseText
-                    var mailEncryptedText = "Your mail content is encrypted\n";
-                    mailEncryptedText += "Click ";
+                    var mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = "Your mail content is encrypted\n";
+		    textframe.body.appendChild(mailDiv);
+		        
+		    mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = "Click <a href='"+hrefURL+"'>Here</a> to access the mail content.";
+		    textframe.body.appendChild(mailDiv);
+		    
+		    mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = "<br><br>Encrypted mail is";
+		    textframe.body.appendChild(mailDiv);
+    
+    		    mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = "=====================================================================";
+		    textframe.body.appendChild(mailDiv);                
                     
-                    mailEncryptedText += " "+hrefURL+" to access the mail content.";
-                    mailEncryptedText += "\n\nEncrypted mail is";
-                    mailEncryptedText += "===================================\n\n";
-                    mailEncryptedText += CryptoJS.AES.encrypt(bodyText, messageKey);
-                    mailEncryptedText += "\n===================================";
-
-                    textframe.body.innerText = mailEncryptedText;
+                    mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = CryptoJS.AES.encrypt(bodyText, messageKey);
+		    textframe.body.appendChild(mailDiv);                
+                    
+                    mailDiv = document.createElement("div");
+		    mailDiv.innerHTML = "=====================================================================";
+		    textframe.body.appendChild(mailDiv);                
                     alert("Encryption done successfully.");
 	        } else {
 	            alert("Error while encryption.");
@@ -276,4 +288,12 @@ function extractIdFromTitle()
 function trimString(str) 
 {
     return str.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+function removeAllChildrenOfNode(parentNode)
+{
+   while (parentNode.hasChildNodes()) 
+   {
+      parentNode.removeChild(parentNode.lastChild);
+   }
 }
