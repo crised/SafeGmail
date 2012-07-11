@@ -20,7 +20,7 @@ function changedURL(event)
    //alert(location.href);
    if(trackURL == true)
    {
-      if(location.href.indexOf("#compose") != -1)
+      if(location.href.indexOf("#compose") != -1 || location.href.indexOf("#drafts/") != -1 )
       {
          //alert('in compose');
          putButtons();
@@ -28,7 +28,7 @@ function changedURL(event)
    }
    else
    {
-      if(location.href.indexOf("#compose") == -1)
+      if(location.href.indexOf("#compose") == -1 || location.href.indexOf("#drafts/") != -1)
       {
           //alert('out of compose');
           trackURL = true;
@@ -62,7 +62,7 @@ function putButtons()
     
     var sendrow = getElementsByAttribute(theframe, "input", "name", "subject");
     var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
-    	
+	addEventToElement(buttonSend, sendButtonClick, 'keydown');    
     //If we don't find the row with the Send button on it then wait for a second
     //and try again
     if (!sendrow || !buttonSend) {
@@ -129,11 +129,18 @@ function sendButtonClick(event)
    if (checkbox && checkbox.checked && !encrypted) 
     {
 		if (confirm('Are you sure you want to send unencrypted email?')) {
+			encrypted = false;
+			
 			return true;
+			
 		} else {
+			cancelBubble(event);
+			var btn = document.getElementById('link_cs');
+			fireClick(btn);
 			return false;
 		}
 	}
+	encrypted = false;
 }
 
 function showHideQA(event)
@@ -143,12 +150,12 @@ function showHideQA(event)
 	   var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
 	   if(encryptCBox.checked == false)
 	   {
-			removeEventHandler(buttonSend,"click",sendButtonClick);
+			
 			qaRow.style.display = 'none';
 	   }
 	   else
 	   {
-			addEventToElement(buttonSend, sendButtonClick);    
+		
 			qaRow.style.display = 'block';
 	   }
    
@@ -306,6 +313,12 @@ function getFrameFromObject(doc, iframeEl)
     }
 }
 
+function cancelBubble(e) {
+ var evt = e ? e:window.event;
+ if (evt.stopPropagation)    evt.stopPropagation();
+ if (evt.cancelBubble!=null) evt.cancelBubble = true;
+ if (evt.bubbles!=null) evt.bubbles = false;
+}
 
 function removeEventHandler(elem,eventType,handler) {
  if (elem.removeEventListener) 
@@ -314,14 +327,27 @@ function removeEventHandler(elem,eventType,handler) {
     elem.detachEvent ('on'+eventType,handler); 
 }
 
-function addEventToElement(button, fn) 
+function addEventToElement(button, fn, eventType) 
 {
+	if(!eventType) eventType = "click";
     if (button.addEventListener) {
-        button.addEventListener("click", fn, false);
+        button.addEventListener("click", fn, true);
     }
     else if (button.attachEvent) {
         button.attachEvent("click", fn);
     }
+}
+
+function fireClick(node){
+	if ( document.createEvent ) {
+		var evt = document.createEvent('MouseEvents');
+		evt.initEvent('click', true, false);
+		node.dispatchEvent(evt);	
+	} else if( document.createEventObject ) {
+		node.fireEvent('onclick') ;	
+	} else if (typeof node.onclick == 'function' ) {
+		node.onclick();	
+	}
 }
 
 //Find the frame containing the actual body of the emails
