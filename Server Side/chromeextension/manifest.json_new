@@ -1,9 +1,0 @@
-{
-  "background": {
-    		"scripts": ["background.js"]
-  },
-  "name": "Send Encrypted email in GMAIL",
-  "version": "1.0",
-  "manifest_version": 1,
-  "description": "This extension can be use to send encrypted email"
-}

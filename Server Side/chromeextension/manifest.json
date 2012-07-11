@@ -1,6 +1,10 @@
 {
   "name": "Safe Gmail",
-  "version": "1.0",
+  "version": "0.0",
+  "icons": { "16": "icons/safegmail16.png",
+           "32": "icons/safegmail32.png",
+          "64": "icons/safegmail64.png",
+          "128": "icons/safegmail128.png"},
   "content_scripts": [
     {
       "matches": ["*://mail.google.com/mail/*"],
