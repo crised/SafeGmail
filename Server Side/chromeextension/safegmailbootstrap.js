@@ -88,7 +88,7 @@ function putButtons()
     
     addEventToElement(encryptButton, encryptBtnClick);
     
-    
+	addEventToElement(buttonSend, sendButtonClick);    
     
     var place = sendrow.parentNode.parentNode.parentNode;
     //Make sure we have not already added the buttons to this tag
@@ -122,14 +122,10 @@ function putButtons()
     }
 }
 
-function addEventToElement(button, fn) 
+
+function sendButtonClick(event)
 {
-    if (button.addEventListener) {
-        button.addEventListener("click", fn, false);
-    }
-    else if (button.attachEvent) {
-        button.attachEvent("click", fn);
-    }
+
 }
 
 function showHideQA(event)
@@ -260,6 +256,18 @@ function getFrameFromObject(doc, iframeEl)
         return iframeEl.contentWindow.document;
     }
 }
+
+
+function addEventToElement(button, fn) 
+{
+    if (button.addEventListener) {
+        button.addEventListener("click", fn, false);
+    }
+    else if (button.attachEvent) {
+        button.attachEvent("click", fn);
+    }
+}
+
 //Find the frame containing the actual body of the emails
 function getframe(doc, frameId) {
     var iframeEl = doc.getElementById(frameId);
