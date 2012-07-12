@@ -252,7 +252,7 @@ function encryptBtnClick(e)
 		http.send(params);
 		return result;
     } else  {
-		alert('You need to click on checkbox, then fill in Question and Answer');
+		alert('You need to click on checkbox, then fill in Question and Answer.');
 	}
 }     
 
