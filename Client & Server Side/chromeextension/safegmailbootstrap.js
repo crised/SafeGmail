@@ -128,7 +128,8 @@ function sendButtonClick(event)
    var checkbox = theframe.getElementById('boom');
    if (checkbox && checkbox.checked && !encrypted) 
     {
-		if (confirm('Are you sure you want to send unencrypted email?')) {
+		alert('You have sent unencrypted email!');
+		/*if (confirm('Are you sure you want to send unencrypted email?')) {
 			encrypted = false;
 			
 			return true;
@@ -138,7 +139,7 @@ function sendButtonClick(event)
 			var btn = document.getElementById('link_cs');
 			fireClick(btn);
 			return false;
-		}
+		}*/
 	}
 	encrypted = false;
 }
@@ -171,8 +172,8 @@ function encryptBtnClick(e)
 	 
         var from = extractIdFromTitle();
 	
-	var qwestion = getElementsByAttribute(theframe, "input", "name", "question");
-	var answer = getElementsByAttribute(theframe, "input", "name", "answer");
+		var qwestion = getElementsByAttribute(theframe, "input", "name", "question");
+		var answer = getElementsByAttribute(theframe, "input", "name", "answer");
         var qwestionText = qwestion.value;
         var answerText = answer.value;
         if (qwestionText == "" || answerText == "") 
@@ -190,17 +191,12 @@ function encryptBtnClick(e)
         params += "&recepientId=" + encodeURIComponent(from);
         params += "&question=" + encodeURIComponent(qwestionText);
         params += "&answer=" + encodeURIComponent(answerText);
-	params += "&credentials="+encodeURIComponent("safegmailsysuser:testpass");
+		params += "&credentials="+encodeURIComponent("safegmailsysuser:testpass");
      
-	//var spinner = new Spinner(opts).spin(theFrame.getElementById("wait");
-	//qwestion.disabled = true;
-	//answer.disabled = true;
-	//checkbox.disabled = true;
-        
         //AJAX CALL
         var http = new XMLHttpRequest();
         var url = "http://www.safegmail.com:8080/SafeMail/MessageController?action=send";
-	var result = true;
+		var result = true;
 			
         http.onreadystatechange = function() 
         {
@@ -242,20 +238,22 @@ function encryptBtnClick(e)
                 }
                 displaySavingGmailDiv("Encrypting...", false);
             }
-            
-	};
+         	
+		};
         //Prepare prams for sending to server 
 
 
-        http.async = false;
-        //Send the request
-        http.open("POST", url, true);
-        http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		http.async = false;
+		//Send the request
+		http.open("POST", url, true);
+		http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 		displaySavingGmailDiv("Encrypting...", true);
-        http.send(params);
-	return result;
-    }
+		http.send(params);
+		return result;
+    } else  {
+		alert('You need to click on checkbox, then fill in Question and Answer');
+	}
 }     
 
 function displaySavingGmailDiv(savingMessage, show)
