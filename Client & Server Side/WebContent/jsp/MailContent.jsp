@@ -16,7 +16,8 @@
 		     var eText = document.getElementById("encryptedMailTxt");
 		     var messageKey = '<%=reqMessageKey%>';
 		     var text = CryptoJS.AES.decrypt(eText.value, messageKey);
-		     decryptedMailTxt.value = hex2a(text.toString());
+			 var decryptedMailTxtArea = document.getElementById("decryptedMailTxt");
+			 decryptedMailTxtArea.value = hex2a(text.toString());
 
 			 showEncryptedDiv(false);
 		}
