@@ -3,25 +3,11 @@ SafeGmail
 
 Things left to do:
 
-1. Small HTML&CSS Website: 
-Show images of the process of sending an encrypted e-mail.
-We can make use of the blog of SourceForge.
+1.Firefox Extension
 
-2. Add PASSWORD to make AJAX calls.
+2. Canon the answer on client side. 
 
-3. Set up Tomcat & Extension to handle SSL. 
+3. Progress bar on client extension.
 
-4. SSL Certificate for VPS.
+4. Handle errors on decryption webpage e.g. "you should not enter the dashes".
 
-5. Upload it to SourceForge.
-
-6. Make a simple logo.
-
-7. Canon the answer on client side. 
-
-8. Progress bar on client extension.
-
-9. Handle errors on decryption webpage e.g. "you should not enter the dashes".
-
-10. Handle browser extension updates.
-http://code.google.com/chrome/extensions/autoupdate.html
