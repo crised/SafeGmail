@@ -50,10 +50,8 @@ a
 { outline: none;}
 
 form
-{ 
-  padding: 0; 	
-  margin: 0;
-}
+{ padding: 0; 
+  margin: 0;}
 
 .left
 { float: left;
@@ -91,21 +89,18 @@ ol li
 { margin: 0px 0px 11px 0px; 
   padding: 0px;}
 
-#main, #logo, #menubar, #site_content, #footer, #site_content1
+#main, #logo, #menubar, #site_content, #footer
 { margin-left: auto; 
   margin-right: auto;}
 
 #header
-{ 
-	background: url(../img/back.png) repeat-x;
-}
+{ background: url(back.png) repeat-x;}
 
 #logo
-{ width: 1000px;
+{ width: 870px;
   height: 127px;
   position: relative;
-  background: transparent url(../img/logo.png) no-repeat left;
-}
+  background: transparent url(logo.png) no-repeat center;}
 
 #logo #logo_text 
 { position: absolute; 
@@ -190,10 +185,10 @@ ul#menu li.selected a
 
 ul#menu li.selected
 { margin: 7px 0 0 0;
-  background: #635B53 url(../img/tabs.png) no-repeat 0 0px;}
+  background: #635B53 url(tabs.png) no-repeat 0 0px;}
 
 ul#menu li.selected a, ul#menu li.selected a:hover
-{ background: #635B53 url(../img/tabs.png) no-repeat 100% 0px;
+{ background: #635B53 url(tabs.png) no-repeat 100% 0px;
   color: #FFF;}
 
 ul#menu li a:hover
@@ -202,13 +197,6 @@ ul#menu li a:hover
 #site_content
 {
 	width: 960px;
-	margin-top: 10px;
-	overflow: hidden;
-} 
-
-#site_content1
-{
-	width: 1000px;
 	margin-top: 10px;
 	overflow: hidden;
 } 
@@ -231,7 +219,7 @@ ul#menu li a:hover
 { text-decoration: none; 
   padding: 4px 0px 4px 35px;
   display: block;
-  background: transparent url(../img/arrow.png) no-repeat left center;
+  background: transparent url(arrow.png) no-repeat left center;
   color: #555;
   border: none;} 
 
@@ -254,7 +242,7 @@ ul#menu li a:hover
   padding: 20px 0px 4px 0px;
   margin-bottom: 20px;
   text-align: center; 
-  background: #009900;
+  background: #313131;
   color: #A8AA94;
   border-top: 4px solid #00AFCE;
   text-transform: uppercase;
@@ -290,7 +278,7 @@ ul#menu li a:hover
   width: 299px; 
   font: 100% arial; 
   border: 1px solid #E5E5DB; 
-  background: #CCC6B4; 
+  background: #FFF; 
   color: #47433F;}
   
 .form_settings .submit
@@ -329,11 +317,12 @@ table
 { margin: 10px 0 30px 0;}
 
 table tr th, table tr td
-{ 
+{ background: #3B3B3B;
+  color: #FFF;
   padding: 7px 4px;
   text-align: left;}
   
 table tr td
-{ 
+{ background: #FFF;
   color: #47433F;
-}
+  border-top: 1px solid #FFF;}

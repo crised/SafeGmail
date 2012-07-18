@@ -12,8 +12,8 @@
 	<div id="header">
       <div id="logo">
         <div id="logo_text">
-          <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
-          <h2>PGP encryption for Gmail.</h2>
+         <!-- <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
+          <h2>PGP encryption for Gmail.</h2> -->
         </div>
       </div>
     </div>
@@ -63,11 +63,11 @@
 					</tr>
 				</table>
 			</form>
-			<h2>**We Never access your messages, encryption/decryption is done within your browser**</h2>
-                </div>
-        </div>
-        <div id="content_footer"></div>
-        <div id="footer"/>
+                     <h2>**We Never access your messages, encryption/decryption is done within your browser**</h2>
+		</div>
+	</div>	
+	<div id="content_footer"></div>
+	<div id="footer"/>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-33255588-1']);
