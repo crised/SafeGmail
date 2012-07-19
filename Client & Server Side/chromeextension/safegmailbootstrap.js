@@ -59,10 +59,9 @@ function putButtons()
   //Find the Send button
   if(!theframe.getElementById('encript'))
   {
-    
     var sendrow = getElementsByAttribute(theframe, "input", "name", "subject");
     var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
-	addEventToElement(buttonSend, sendButtonClick, 'keydown');    
+    
     //If we don't find the row with the Send button on it then wait for a second
     //and try again
     if (!sendrow || !buttonSend) {
@@ -78,7 +77,8 @@ function putButtons()
     encryptDiv.setAttribute("role", "button");
     encryptDiv.setAttribute("tabindex", "2");
     encryptDiv.setAttribute("style", "-webkit-user-select: none");
-    encryptDiv.innerHTML = "<b style='-webkit-user-select: none; '>Encrypt</b>";
+    encryptDiv.innerHTML = "<b style='-webkit-user-select: none; '>Encrypt & Send</b>";
+    encryptDiv.style.display = 'none'; // hide the button in first place
     
     buttonSend.parentNode.insertBefore(encryptDiv, buttonSend.nextSibling);
     
@@ -104,16 +104,17 @@ function putButtons()
     var htmlString = '<td class="eD">Encrypt?</td><td><input type="checkbox" name="boom" id="boom" style="margin-right:5px;" /></td>';
     encryptCBoxRow.innerHTML = htmlString;
     place.insertBefore(encryptCBoxRow, sendrow.nextSibling);
+    addEventToElement(theframe.getElementById('boom'), showHideQA);
     
     
-    //Adding encrypt checkbox
+    //Adding encrypt Q & A 
     var qaRow = theframe.createElement("tr");	
     qaRow.setAttribute("id", "encriptQA");
     htmlString = '<td></td><td><table id="q_and_a" style="display:none"><tr id="encryptdiv"><tr><td colspan="2" class="eD">Type a Question and Secret Answer that only the recipient can answer.</td></tr><tr><td class="eD">Question:</td><td><input type="text" id="textAreaS" name="question" style="width:100%" /></td></tr><tr><td class="eD">Answer:</td><td><input type="text" id="textAreaE" name="answer" style="width:100%" /></td></tr></td></tr></table></td>';
     qaRow.innerHTML = htmlString;
     place.insertBefore(qaRow, sendrow.nextSibling);
     
-    addEventToElement(theframe.getElementById('boom'), showHideQA); 
+     
     	
     
     //go back and recreate the buttons after any form inputs
@@ -121,45 +122,24 @@ function putButtons()
     }
 }
 
-
-function sendButtonClick(event)
-{
-	
-   var checkbox = theframe.getElementById('boom');
-   if (checkbox && checkbox.checked && !encrypted) 
-    {
-		alert('You have sent unencrypted email!');
-		/*if (confirm('Are you sure you want to send unencrypted email?')) {
-			encrypted = false;
-			
-			return true;
-			
-		} else {
-			cancelBubble(event);
-			var btn = document.getElementById('link_cs');
-			fireClick(btn);
-			return false;
-		}*/
-	}
-	encrypted = false;
-}
-
 function showHideQA(event)
 {
-		var encryptCBox = theframe.getElementById('boom');
-	   var qaRow = theframe.getElementById('q_and_a');
-	   var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
-	   if(encryptCBox.checked == false)
-	   {
-			
-			qaRow.style.display = 'none';
-	   }
-	   else
-	   {
-		
-			qaRow.style.display = 'block';
-	   }
-   
+	var encryptCBox = theframe.getElementById('boom');
+	var qaRow = theframe.getElementById('q_and_a');
+	var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
+	var encryptBtn = getElementsByAttribute(theframe, "div", "id", "encryptBtn");
+	if(encryptCBox.checked == false)
+	{
+		qaRow.style.display = 'none';
+		buttonSend.style.display = null;
+		encryptBtn.style.display = 'none';
+	}
+	else
+	{
+		qaRow.style.display = 'block';
+		buttonSend.style.display = 'none';
+		encryptBtn.style.display = null;
+	}  
 }
 
 function encryptBtnClick(e) 
@@ -230,8 +210,17 @@ function encryptBtnClick(e)
                     mailDiv = document.createElement("div");
 		    mailDiv.innerHTML = "=====================================================================";
 		    textframe.body.appendChild(mailDiv);                
-                    alert("Encryption done successfully.");
-					encrypted = true;
+                    //alert("Encryption done successfully.");
+			//		encrypted = true;
+		    var buttonSend = getElementsByAttribute(theframe, "div", "class", "T-I J-J5-Ji Bq nS T-I-KE L3");
+        	    var evt = document.createEvent("MouseEvents");
+    		    evt.initMouseEvent("mousedown", true, true, window, 0, 0, 0, 0, 0,
+        							false, false, false, false, 0, null);
+        	    buttonSend.dispatchEvent(evt);
+        	    evt = document.createEvent("MouseEvents");
+		    evt.initMouseEvent("mouseup", true, true, window, 0, 0, 0, 0, 0,
+		            							false, false, false, false, 0, null);
+        	    buttonSend.dispatchEvent(evt);
 	        } else {
 	            alert("Error while encryption.");
 		    result = false;
@@ -239,7 +228,7 @@ function encryptBtnClick(e)
                 displaySavingGmailDiv("Encrypting...", false);
             }
          	
-		};
+	};
         //Prepare prams for sending to server 
 
 
