@@ -1,13 +1,13 @@
 {
   "name": "Safe Gmail",
-  "version": "0.2",
+  "version": "0.3",
   "icons": { "16": "icons/16.png",
            "32": "icons/32.png",
           "64": "icons/64.png",
           "128": "icons/128.png"},
   "content_scripts": [
     {
-      "matches": [ "*://mail.google.com/*"],
+      "matches": ["*://mail.google.com/*"],
 	  "js": ["safegmailbootstrap.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
     }
   ]
