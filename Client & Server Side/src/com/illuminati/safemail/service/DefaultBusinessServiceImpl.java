@@ -53,16 +53,10 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		return userDao;
 	}
 
-	public boolean isValidAnswer(String ans, String messageId,
-			boolean oldVersion) {
+	public boolean isValidAnswer(String ans, String messageId) {
 		MessageDO messageDetails = getMessageDao().getMessageById(messageId);
 		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
-		byte[] hashedAnswer = null;
-		if (oldVersion) {
-			hashedAnswer = Util.hash(answer);
-		} else {
-			hashedAnswer = answer.getBytes();
-		}
+		byte[] hashedAnswer = Util.hash(answer);
 		// Verifying if correct answer is entered by user or not.
 		if (hashedAnswer.length == messageDetails.getAnswer().length) {
 			for (int count = 0; count < messageDetails.getAnswer().length; count++) {
@@ -83,16 +77,10 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 	 * com.illuminati.mailvault.service.BusinessService#receive(java.lang.String
 	 * , java.lang.String)
 	 */
-	public String receive(String ans, String messageId, boolean oldVersion) {
+	public String receive(String ans, String messageId) {
 		MessageDO messageDetails = getMessageDao().getMessageById(messageId);
 		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
-		byte[] hashedAnswer = null;
-		if (oldVersion) {
-			hashedAnswer = Util.hash(answer);
-		} else {
-			hashedAnswer = answer.getBytes();
-		}
-
+		byte[] hashedAnswer = Util.hash(answer);
 		// Verifying if correct answer is entered by user or not.
 		try {
 			ElGamalPrivateKey privateKey = Util.decryptPrivateKey(
@@ -117,7 +105,7 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 		ElGamalPublicKey puk = getUserDao().getPublicKey(recipient);
 		ElGamalPrivateKey pvk = getUserDao().getPrivateKey(recipient);
 		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
-		byte[] hashedAnswer = answer.getBytes();
+		byte[] hashedAnswer = Util.hash(answer);
 		try {
 			byte[] encryptedMessageKey = Util.encryptMessage(messageKey
 					.getBytes(), puk);

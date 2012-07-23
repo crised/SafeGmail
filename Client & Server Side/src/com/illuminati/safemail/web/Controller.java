@@ -99,40 +99,20 @@ public final class Controller extends HttpServlet {
 			String userAnswer = request.getParameter("userAnswer");
 			String messageId = (String) request.getSession().getAttribute(
 					"messageId");
-			boolean validAnswer = service.isValidAnswer(userAnswer, messageId,
-					false);
-
+			boolean validAnswer = service.isValidAnswer(userAnswer, messageId);
 			if (validAnswer) {
 				request.setAttribute("messageKey", service.receive(userAnswer,
-						messageId, false));
+						messageId));
 				request.getRequestDispatcher("jsp/MailContent.jsp").forward(
 						request, response);
 			} else {
-				String nonCanonicalUserAnswer = null;
-				// Try for the non-canonized answer. This can be the case of the
-				// message encrypted with the older non-canonized version.
-				if (!validAnswer) {
-					nonCanonicalUserAnswer = request
-							.getParameter("userAnswer1");
-					validAnswer = service.isValidAnswer(nonCanonicalUserAnswer,
-							messageId, true);
-				}
-
-				if (validAnswer) {
-					request.setAttribute("messageKey", service.receive(
-							nonCanonicalUserAnswer, messageId, true));
-					request.getRequestDispatcher("jsp/MailContent.jsp")
-							.forward(request, response);
-				} else {
-					request.setAttribute("messageQuestion", service
-							.getQuestion(messageId));
-					int ansTries = (Integer) request.getSession().getAttribute(
-							"answerTries");
-					request.getSession()
-							.setAttribute("answerTries", ++ansTries);
-					request.getRequestDispatcher("jsp/MessageQuestion.jsp")
-							.forward(request, response);
-				}
+				request.setAttribute("messageQuestion", service
+						.getQuestion(messageId));
+				int ansTries = (Integer) request.getSession().getAttribute(
+						"answerTries");
+				request.getSession().setAttribute("answerTries", ++ansTries);
+				request.getRequestDispatcher("jsp/MessageQuestion.jsp")
+						.forward(request, response);
 			}
 		} else {
 			throw new UnsupportedOperationException("Operation not supported");

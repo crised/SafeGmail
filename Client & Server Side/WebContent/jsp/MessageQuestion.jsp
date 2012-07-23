@@ -8,25 +8,6 @@
 <link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
 <link rel="shortcut icon" href="jsp/img/icon.png">
 </head>
-<script type="text/javascript" src="jsp/cryptojs/rollups/md5.js"></script>
-<script type="text/javascript">
-function submitForm()
-{
-	var answerText = canonicalString(document.getElementById("userAns").value);
-    //Adding canonical hashed string
-    document.getElementById("userHashedAns").value = CryptoJS.MD5(answerText);
-    document.forms["inputForm"].submit();
-}
-
-function canonicalString(str)
-{
-    return trimString(str).toLowerCase();
-}
-function trimString(str) 
-{
-    return str.replace(/^\s*/, "").replace(/\s*$/, "");
-}
-</script>
 <body>
 	<div id="header">
       <div id="logo">
@@ -41,7 +22,6 @@ function trimString(str)
     	<div id="content">
 			<form name="inputForm" action="MessageController?action=receive" 
 						method="post">
-						<input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">
 					<tr>
@@ -50,8 +30,7 @@ function trimString(str)
 					</tr>
 					<tr>
 						<td><b>Type in your answer : </b></td>
-						<td><input type="text" name="userAnswer1" id="userAns" size="100"/>
-						</td>
+						<td><input type="text" name="userAnswer" size="100"/></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
@@ -78,7 +57,7 @@ function trimString(str)
 					<tr>
 						<td colspan="2" align="center">
 							<div align="center">
-								<input type="button" value="Submit" id="submitBtn" onclick="submitForm()"/>
+								<input type="submit" value="Submit" id="submitBtn"/>
 							</div>
 						</td>
 					</tr>

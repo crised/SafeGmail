@@ -42,11 +42,6 @@ public class Util {
 
 	private static final SecureRandom random = new SecureRandom();
 
-	public static String canonicalString(String str) {
-		String canonicalString = str.trim();
-		return canonicalString.toLowerCase();
-	}
-
 	public static synchronized String decrypt(byte[] payload, PrivateKey key)
 			throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException,
@@ -137,7 +132,7 @@ public class Util {
 	public static Connection getConnection() throws SQLException {
 		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 		String user = "root";
-		String password = "testpass";
+		String password = "new.Venture.mysql";
 		String url = "jdbc:mysql://localhost/safemail?useUnicode=yes&characterEncoding=UTF-8";
 		return DriverManager.getConnection(url, user, password);
 	}
