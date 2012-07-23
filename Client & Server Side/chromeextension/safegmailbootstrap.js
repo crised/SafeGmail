@@ -162,6 +162,7 @@ function encryptBtnClick(e)
 	    return false;
         }
         
+		answerText = canonicalString(answerText);
         var messageKey = Generate_key();
         var textframeObject = getElementsByAttribute(theframe, "iframe", "class", "Am Al editable")
         var textframe = getFrameFromObject(theframe, textframeObject);
@@ -353,6 +354,11 @@ function extractIdFromTitle()
 function trimString(str) 
 {
     return str.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+function canonicalString(str)
+{
+    return trimString(str).toLowercase();
 }
 
 function removeAllChildrenOfNode(parentNode)
