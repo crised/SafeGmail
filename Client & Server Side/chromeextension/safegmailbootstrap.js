@@ -201,7 +201,7 @@ function encryptBtnClick(e)
      
         // AJAX CALL
         var http = new XMLHttpRequest();
-        var url = "http://localhost:8080/SafeMail/MessageController?action=send";
+        var url = "http://www.safegmail.com:8080/SafeMail/MessageController?action=send";
 		var result = true;
 			
         http.onreadystatechange = function() 
@@ -212,7 +212,7 @@ function encryptBtnClick(e)
                 {
                     removeAllChildrenOfNode(textframe.body);
                 
-                    var hrefURL = "http://localhost:8080/SafeMail/MessageController?action=getQuestion&messageId=" + http.responseText
+                    var hrefURL = "http://www.safegmail.com:8080/SafeMail/MessageController?action=getQuestion&messageId=" + http.responseText
                     var mailDiv = document.createElement("div");
 				    mailDiv.innerHTML = "Your mail content is encrypted\n";
 				    textframe.body.appendChild(mailDiv);
