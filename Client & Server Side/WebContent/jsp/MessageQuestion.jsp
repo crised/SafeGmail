@@ -31,7 +31,9 @@ function trimString(str)
 	<div id="header">
       <div id="logo">
         <div id="logo_text">
-         </div>
+         <!-- <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
+          <h2>PGP encryption for Gmail.</h2> -->
+        </div>
       </div>
     </div>
     <div id="content_header"></div>
@@ -39,7 +41,7 @@ function trimString(str)
     	<div id="content">
 			<form name="inputForm" action="MessageController?action=receive" 
 						method="post">
-			    <input type="hidden" name="userAnswer" id="userHashedAns"/>
+						<input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">
 					<tr>
@@ -48,7 +50,8 @@ function trimString(str)
 					</tr>
 					<tr>
 						<td><b>Type in your answer : </b></td>
-						<td><input type="text" name="userAnswer1" id="userAns" size="100"/></td>
+						<td><input type="text" name="userAnswer1" id="userAns" size="100"/>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
@@ -75,7 +78,7 @@ function trimString(str)
 					<tr>
 						<td colspan="2" align="center">
 							<div align="center">
-								<input type="submit" value="Submit" id="submitBtn onclick="submitForm()"/>
+								<input type="button" value="Submit" id="submitBtn" onclick="submitForm()"/>
 							</div>
 						</td>
 					</tr>
@@ -86,5 +89,15 @@ function trimString(str)
 	</div>	
 	<div id="content_footer"></div>
 	<div id="footer"/>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33255588-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </body>
 </html>
