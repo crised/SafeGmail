@@ -8,13 +8,30 @@
 <link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
 <link rel="shortcut icon" href="jsp/img/icon.png">
 </head>
+<script type="text/javascript" src="jsp/cryptojs/rollups/md5.js"></script>
+<script type="text/javascript">
+function submitForm()
+{
+	var answerText = canonicalString(document.getElementById("userAns").value);
+    //Adding canonical hashed string
+    document.getElementById("userHashedAns").value = CryptoJS.MD5(answerText);
+    document.forms["inputForm"].submit();
+}
+
+function canonicalString(str)
+{
+    return trimString(str).toLowerCase();
+}
+function trimString(str) 
+{
+    return str.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+</script>
 <body>
 	<div id="header">
       <div id="logo">
         <div id="logo_text">
-         <!-- <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
-          <h2>PGP encryption for Gmail.</h2> -->
-        </div>
+         </div>
       </div>
     </div>
     <div id="content_header"></div>
@@ -22,6 +39,7 @@
     	<div id="content">
 			<form name="inputForm" action="MessageController?action=receive" 
 						method="post">
+			    <input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">
 					<tr>
@@ -30,7 +48,7 @@
 					</tr>
 					<tr>
 						<td><b>Type in your answer : </b></td>
-						<td><input type="text" name="userAnswer" size="100"/></td>
+						<td><input type="text" name="userAnswer1" id="userAns" size="100"/></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
@@ -57,7 +75,7 @@
 					<tr>
 						<td colspan="2" align="center">
 							<div align="center">
-								<input type="submit" value="Submit" id="submitBtn"/>
+								<input type="submit" value="Submit" id="submitBtn onclick="submitForm()"/>
 							</div>
 						</td>
 					</tr>
@@ -68,15 +86,5 @@
 	</div>	
 	<div id="content_footer"></div>
 	<div id="footer"/>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-33255588-1']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
 </body>
 </html>
