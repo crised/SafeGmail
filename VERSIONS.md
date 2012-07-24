@@ -1,6 +1,8 @@
 SafeGmail
 =========
 
+Alpha - July 09
+
 0.1 - July 11
 
 0.2 - July 12
