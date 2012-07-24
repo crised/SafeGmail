@@ -15,3 +15,12 @@ Things left to do:
 
 6. Expire date set.  
 
+Extension:
+
+1. Fix bug about sending the id.
+2. Transform to Jquery. 
+
+Server Side
+
+1.
+
