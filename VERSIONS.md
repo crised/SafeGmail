@@ -5,6 +5,7 @@ SafeGmail
 
 0.2 - July 12
 - Added alerts
+- Credentials to log into the server.
 
 0.3 - July 19
 - Merged Encrypt + Send Button. 
