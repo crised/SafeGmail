@@ -178,9 +178,17 @@ function encryptBtnClick(e)
         
         var qwestionText = qwestion.value;
         var answerText = answer.value;
-        if (qwestionText == "" || answerText == "") 
+		var letterNumber = /^[0-9a-zA-Z\-\'\_\?]+$/;
+		// /^[0-9a-zA-Z \-'_]+$/
+		if (qwestionText == "" || answerText == "") 
         {
 		    alert("Question or answer field is empty");
+		    return false;
+        }
+		
+		if (!qwestionText.match(letterNumber) || !answerText.match(letterNumber))
+		{
+		    alert("Please try using only letters or numbers in Question & Answer fields");
 		    return false;
         }
         
@@ -192,16 +200,18 @@ function encryptBtnClick(e)
         var textframeObject = getElementsByAttribute(theframe, "iframe", "class", "Am Al editable")
         var textframe = getFrameFromObject(theframe, textframeObject);
         var bodyText = textframe.body.innerText;
+		
         
         var params = "messageKey=" + encodeURIComponent(messageKey);
         params += "&recepientId=" + encodeURIComponent(from);
         params += "&question=" + encodeURIComponent(qwestionText);
         params += "&answer=" + encodeURIComponent(answerText);
+		params += "&version=" + encodeURIComponent("0.4");
 		params += "&credentials="+encodeURIComponent("safegmailsysuser:testpass");
      
         // AJAX CALL
         var http = new XMLHttpRequest();
-        var url = "http://www.safegmail.com:8080/SafeMail/MessageController?action=send";
+        var url = "http://wwww.safegmail.com:8080/SafeMail/MessageController?action=send";
 		var result = true;
 			
         http.onreadystatechange = function() 
@@ -281,7 +291,7 @@ function displaySavingGmailDiv(savingMessage, show)
 			radius: 10, // The radius of the inner circle
 			rotate: 29, // The rotation offset
 			color: '#fff', // #rgb or #rrggbb
-			speed: 1.3, // Rounds per second
+			speed: 0.1, // Rounds per second
 			trail: 62, // Afterglow percentage
 			shadow: false, // Whether to render a shadow
 			hwaccel: false, // Whether to use hardware acceleration
@@ -379,7 +389,7 @@ function extractIdFromTitle()
 
 function trimString(str) 
 {
-    return str.replace(/^\s*/, "").replace(/\s*$/, "");
+    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\s+/g,"");
 }
 
 function canonicalString(str)
