@@ -12,3 +12,11 @@ Alpha - July 09
 0.3 - July 19
 - Merged Encrypt + Send Button. 
 Red Encrypt Button - Deprecated
+
+0.4 - July 25
+Canonization support (case sensitive, white spaces removed)
+
+Server side
+
+0.2 - July 25 
+Added version retrieving from extension, canonization support.
