@@ -211,7 +211,7 @@ function encryptBtnClick(e)
      
         // AJAX CALL
         var http = new XMLHttpRequest();
-        var url = "http://wwww.safegmail.com:8080/SafeMail/MessageController?action=send";
+        var url = "http://www.safegmail.com:8080/SafeMail/MessageController?action=send";
 		var result = true;
 			
         http.onreadystatechange = function() 
