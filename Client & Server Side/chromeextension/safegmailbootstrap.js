@@ -178,7 +178,7 @@ function encryptBtnClick(e)
         
         var qwestionText = qwestion.value;
         var answerText = answer.value;
-		var letterNumber = /^[0-9a-zA-Z\-\'\_\?]+$/;
+		var letterNumber = /^[0-9a-zA-Z \-\'\_\?]+$/;
 		// /^[0-9a-zA-Z \-'_]+$/
 		if (qwestionText == "" || answerText == "") 
         {
