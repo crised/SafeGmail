@@ -12,11 +12,6 @@
 <!-- Header -->
 <div id="header">
 <div id="logo">
-<div id="logo_text">
-<h1><a href="http://www.safegmail.com">Safe<span
-	class="logo_colour">Gmail</span></a></h1>
-<h2>PGP encryption for Gmail.</h2>
-</div>
 </div>
 </div>
 

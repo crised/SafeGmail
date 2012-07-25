@@ -112,12 +112,17 @@ public final class DefaultBusinessServiceImpl implements BusinessService {
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public String send(String messageKey, String recipient, String question,
-			String ans) {
+			String ans, Float version) {
 		String messageId = null;
 		ElGamalPublicKey puk = getUserDao().getPublicKey(recipient);
 		ElGamalPrivateKey pvk = getUserDao().getPrivateKey(recipient);
-		String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
-		byte[] hashedAnswer = answer.getBytes();
+		byte[] hashedAnswer = null;
+		if (version == 0.0F){
+			String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
+			hashedAnswer = Util.hash(answer);
+		}
+		else {hashedAnswer = ans.getBytes();};
+		
 		try {
 			byte[] encryptedMessageKey = Util.encryptMessage(messageKey
 					.getBytes(), puk);

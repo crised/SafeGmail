@@ -16,5 +16,5 @@ public interface BusinessService {
 	public String receive(String ans, String messageId, boolean oldVersion);
 
 	public String send(String messageKey, String recipient, String question,
-			String ans);
+			String ans, Float version);
 }

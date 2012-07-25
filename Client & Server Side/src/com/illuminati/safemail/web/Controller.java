@@ -80,8 +80,20 @@ public final class Controller extends HttpServlet {
 					String messageKey = request.getParameter("messageKey");
 					String question = request.getParameter("question");
 					String answer = request.getParameter("answer");
+					String versionParam = request.getParameter("version");
+					float version;
+					try {
+						if (versionParam == null || Float.valueOf(versionParam) < 0.4 )
+						{
+							version = 0.0F;
+						}
+						else { version = Float.valueOf(versionParam); }
+						
+					} catch (NumberFormatException ex) {
+						throw new RuntimeException("Version mismatch"); 
+					}
 					String messageId = service.send(messageKey, recipientId,
-							question, answer);
+							question, answer, version);
 					response.getWriter().write(messageId);
 					return;
 				}
@@ -97,10 +109,12 @@ public final class Controller extends HttpServlet {
 					request, response);
 		} else if ("receive".equals(action)) {
 			String userAnswer = request.getParameter("userAnswer");
+			System.out.println(userAnswer);
 			String messageId = (String) request.getSession().getAttribute(
 					"messageId");
 			boolean validAnswer = service.isValidAnswer(userAnswer, messageId,
 					false);
+			
 
 			if (validAnswer) {
 				request.setAttribute("messageKey", service.receive(userAnswer,

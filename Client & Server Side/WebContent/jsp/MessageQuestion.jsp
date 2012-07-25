@@ -12,10 +12,23 @@
 <script type="text/javascript">
 function submitForm()
 {
-	var answerText = canonicalString(document.getElementById("userAns").value);
-    //Adding canonical hashed string
-    document.getElementById("userHashedAns").value = CryptoJS.MD5(answerText);
-    document.forms["inputForm"].submit();
+	var submitBtnDisabled = document.getElementById("submitBtn").disabled;
+	if(submitBtnDisabled == false)
+	{
+		var answerText = canonicalString(document.getElementById("userAns").value);
+	    //Adding canonical hashed string
+	    document.getElementById("userHashedAns").value = CryptoJS.MD5(answerText);
+	    document.getElementById("submitBtn").disabled="disabled";
+	    document.forms["inputForm"].submit();
+	}
+}
+
+function removeSubmitButton()
+{
+	var submitBtnObj = document.getElementById("submitBtn");
+	var submitDivObj = document.getElementById("submitDiv");
+	self.clearInterval(intervalTime);
+	submitDivObj.removeChild(submitBtnObj);
 }
 
 function canonicalString(str)
@@ -24,7 +37,29 @@ function canonicalString(str)
 }
 function trimString(str) 
 {
-    return str.replace(/^\s*/, "").replace(/\s*$/, "");
+    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\s+/g,"");
+}
+
+function checkEnter(e)
+{
+	 e = e || event;
+	 <%
+		int triesCount = (Integer)session.getAttribute("answerTries");
+		if(triesCount >= 3){
+	 %>	
+	 		return false;
+	 <%
+		}
+		else
+		{
+	%>		
+		 if(e.keyCode == 13)
+		 {
+		 	submitForm();
+		 }
+		 return (e.keyCode || event.which || event.charCode || 0) !== 13;
+	<%}%>
+	 
 }
 </script>
 <body>
@@ -40,7 +75,7 @@ function trimString(str)
     <div id="site_content">
     	<div id="content">
 			<form name="inputForm" action="MessageController?action=receive" 
-						method="post">
+						method="post" onkeypress="return checkEnter(event)">
 						<input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">
@@ -56,11 +91,12 @@ function trimString(str)
 					<tr>
 						<td colspan="2" align="center">
 						<%
-							int triesCount = (Integer)session.getAttribute("answerTries");
-							if(triesCount >= 5)
+							triesCount = (Integer)session.getAttribute("answerTries");
+							if(triesCount >= 3)
 							{
 						%>
 							<Script type="text/javascript">  
+								var intervalTime = self.setInterval("removeSubmitButton()", 200);
 								alert( "You have exhausted all your tries. Please close the browser and retry later." );
 								window.close();  
 							</Script>  
@@ -69,7 +105,7 @@ function trimString(str)
 							else if(triesCount > 0)
 							{
 						%>
-							<span><font color="red">Your answer is not correct. <%=5-triesCount %> tries left. Please try again.</font></span>
+							<span><font color="red">Your answer is not correct. <%=3-triesCount %> tries left. Please try again.</font></span>
 						<%		
 							}
 						%>
@@ -77,11 +113,11 @@ function trimString(str)
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
-							<div align="center">
+							<div align="center" id="submitDiv">
 								<input type="button" value="Submit" id="submitBtn" onclick="submitForm()"/>
 							</div>
 						</td>
-					</tr>
+					</tr>	
 				</table>
 			</form>
                      <h2>**We Never access your messages, encryption/decryption is done within your browser**</h2>
@@ -89,15 +125,5 @@ function trimString(str)
 	</div>	
 	<div id="content_footer"></div>
 	<div id="footer"/>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-33255588-1']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
 </body>
 </html>
