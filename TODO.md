@@ -11,7 +11,7 @@ Things left to do:
 
 4. Handle errors on decryption webpage e.g. "you should not enter the dashes".
 
-5. Translations: Spanish, German, French, Russian.
+5. Translations: Spanish, German, French, Russian, Chinese.
 
 6. Expire date set.
 
