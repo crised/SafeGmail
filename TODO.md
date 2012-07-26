@@ -11,9 +11,11 @@ Things left to do:
 
 4. Handle errors on decryption webpage e.g. "you should not enter the dashes".
 
-5. Translations: Spanish, German, Russian.
+5. Translations: Spanish, German, French, Russian.
 
-6. Expire date set.  
+6. Expire date set.
+
+7. Digital Signature.
 
 Extension:
 
