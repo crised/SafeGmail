@@ -17,6 +17,8 @@ Things left to do:
 
 7. Digital Signature.
 
+8. Answer salt. 
+
 Extension:
 
 1. Fix bug about sending the id.
