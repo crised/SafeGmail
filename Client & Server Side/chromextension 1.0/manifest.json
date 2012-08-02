@@ -1,0 +1,11 @@
+{
+  "name": "Test",
+  "version": "0.2",
+   "content_scripts": [
+    {
+	  "all_frames": false,
+      "matches": ["*://mail.google.com/mail/*"],
+      "js": ["jquery-1.7.2.js", "test.js", "spin/spin.min.js", "cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
+	}
+  ]
+}
