@@ -13,11 +13,22 @@
 		function showMailClickHandler()
 		{
 			<% String reqMessageKey = request.getAttribute("messageKey").toString(); %>
+			<% String reqDecodeURI= request.getAttribute("DecodeURIComponent").toString(); %>
+			 var decodeURIComponent = '<%=reqDecodeURI%>';
 		     var eText = document.getElementById("encryptedMailTxt");
 		     var messageKey = '<%=reqMessageKey%>';
 		     var text = CryptoJS.AES.decrypt(eText.value, messageKey);
 			 var decryptedMailTxtArea = document.getElementById("decryptedMailTxt");
-			 decryptedMailTxtArea.value = hex2a(text.toString());
+			 
+			 if (decodeURIComponent == 'true')
+				 {
+				 var string1 = hex2a(text.toString());
+				 decryptedMailTxtArea.value = decodeURIComponent(string1);
+				 }
+			 else{
+				 decryptedMailTxtArea.value = hex2a(text.toString());
+				
+			 }
 
 			 showEncryptedDiv(false);
 		}

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Mail Content</title>
+<title>Error Page</title>
 <link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
 <link rel="shortcut icon" href="jsp/img/icon.png">
 </head>

@@ -1,11 +1,17 @@
 {
-  "name": "Test",
-  "version": "0.2",
-   "content_scripts": [
+  "manifest_version": 2,
+  "name": "SafeGmail 1.0",
+  "version": "0",
+  "icons": { "16": "icons/16.png",
+           "32": "icons/32.png",
+          "64": "icons/64.png",
+          "128": "icons/128.png"},
+  "content_scripts": [
     {
-	  "all_frames": false,
-      "matches": ["*://mail.google.com/mail/*"],
-      "js": ["jquery-1.7.2.js", "test.js", "spin/spin.min.js", "cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
-	}
-  ]
+      "matches": ["*://mail.google.com/*"],
+	  "js": ["jquery-1.7.2.js", "safegmailinitializer.js", "spin/spin.min.js","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
+    }
+   ],
+   "permissions":["tabs","http://192.168.1.190:8080/*","https://mail.google.com/*", "*://safegmail.com/*"],
+   "web_accessible_resources": ["logo.png","cryptojs/rollups/aes.js", "javascrypt/aes.js", "javascrypt/md5.js", "javascrypt/aesprng.js", "javascrypt/jscrypt.js", "javascrypt/entropy.js"]
 }
