@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -37,7 +36,7 @@ function canonicalString(str)
 }
 function trimString(str) 
 {
-    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\s+/g,"");
+    return str.replace(/\s/g, "");
 }
 
 function checkEnter(e)
@@ -63,19 +62,11 @@ function checkEnter(e)
 }
 </script>
 <body>
-	<div id="header">
-      <div id="logo">
-        <div id="logo_text">
-         <!-- <h1><a href="http://www.safegmail.com">Safe<span class="logo_colour">Gmail</span></a></h1>
-          <h2>PGP encryption for Gmail.</h2> -->
-        </div>
-      </div>
-    </div>
-    <div id="content_header"></div>
-    <div id="site_content">
+<div id="header">
+<div id="logo"><div id="logo_text"></div></div></div><div id="content_header"></div>
+<div id="site_content">
     	<div id="content">
-			<form name="inputForm" action="MessageController?action=receive" 
-						method="post" onkeypress="return checkEnter(event)">
+			<form name="inputForm" action="MessageController?action=receive" method="post" onkeypress="return checkEnter(event)">
 						<input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">

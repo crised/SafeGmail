@@ -86,24 +86,20 @@ public final class Controller extends HttpServlet {
 				String user = tokenizer.nextToken();
 				String pass = tokenizer.nextToken();
 				if (config.getInitParameter("sysuser").equals(user) && config.getInitParameter("syspass").equals(pass)) {
-					String senderId = request.getParameter("from");
-					String recipientId = request.getParameter("recepientId");
 					String messageKey = request.getParameter("messageKey");
-					String question = request.getParameter("question");
+					String fromMail = request.getParameter("senderId");
+					String toMail = request.getParameter("recepientId");
+					String question =  request.getParameter("question");
 					String answer = request.getParameter("answer");
-					float version = Util.convertToFloat(request
-							.getParameter("version"), 0.0F);
+					float version = Util.convertToFloat(request.getParameter("version"), 0.0F);
 					version = version < 0.4 ? 0.0F : version;
-					// Create time to live
-					//String timeToLiveEnabled = request.getParameter("timeToLiveEnabled");
 					int TTL = Util.convertToInteger(request.getParameter("TTL"), -1);
 					if (TTL == -1) {TTL = 120;} // 5 days expiration by default
 					Timestamp timeToLive = null;
 					Calendar today = GregorianCalendar.getInstance();
 					today.add(Calendar.HOUR_OF_DAY, TTL);
 					timeToLive = new Timestamp(today.getTime().getTime());
-					
-					String messageId = service.send(messageKey, recipientId, question, answer, version, timeToLive, senderId);
+					String messageId = service.send(messageKey, fromMail, toMail, question, answer, timeToLive, version);
 					response.getWriter().write(messageId);
 					return;
 				}
@@ -112,10 +108,15 @@ public final class Controller extends HttpServlet {
 		} 
 		else if ("getQuestion".equals(action)) {
 			String messageId = request.getParameter("messageId");
+			request.getSession().setAttribute("messageId", messageId);
 			boolean messageExpired = service.isMessageExpired(messageId);
 			if (messageExpired) {
-				throw new RuntimeException(
-						"Message is expired and hence, cannot be read.");
+				response.sendRedirect("jsp/ExpiredMessage.jsp");
+				return;
+				//request.getSession().setAttribute("messageId", messageId);
+				//request.getRequestDispatcher("jsp/ExpiredMessage.jsp").forward(request, response);
+				//return;
+				//throw new RuntimeException("Message is expired and hence, cannot be read.");
 			}
 
 			request.getSession().setAttribute("messageId", messageId);
@@ -137,28 +138,20 @@ public final class Controller extends HttpServlet {
 				// Try for the non-canonized answer. This can be the case of the
 				// message encrypted with the older non-canonized version.
 				if (!validAnswer) {
-					nonCanonicalUserAnswer = request
-							.getParameter("userAnswer1");
-					validAnswer = service.isValidAnswer(nonCanonicalUserAnswer,
-							messageId, true);
+					nonCanonicalUserAnswer = request.getParameter("userAnswer1");
+					validAnswer = service.isValidAnswer(nonCanonicalUserAnswer, messageId, true);
 				}
 
 				if (validAnswer) {
-					request.setAttribute("messageKey", service.receive(
-							nonCanonicalUserAnswer, messageId, true));
-					request.getRequestDispatcher("jsp/MailContent.jsp")
-							.forward(request, response);
+					request.setAttribute("messageKey", service.receive(nonCanonicalUserAnswer, messageId, true));
+					request.getRequestDispatcher("jsp/MailContent.jsp").forward(request, response);
 				} else {
-					request.setAttribute("messageQuestion", service
-							.getQuestion(messageId));
-					int ansTries = (Integer) request.getSession().getAttribute(
-							"answerTries");
-					request.getSession()
-							.setAttribute("answerTries", ++ansTries);
-					request.getRequestDispatcher("jsp/MessageQuestion.jsp")
-							.forward(request, response);
+					request.setAttribute("messageQuestion", service.getQuestion(messageId));
+					int ansTries = (Integer) request.getSession().getAttribute("answerTries");
+					request.getSession().setAttribute("answerTries", ++ansTries);
+					request.getRequestDispatcher("jsp/MessageQuestion.jsp").forward(request, response);
 				}
-			}
+			}	
 		} else if ("getLatestJS".equals(action)) {
 			System.out.println(request.getParameter("extVersion"));
 			String fileName = "/WEB-INF/js/safegmailbootstrap.js";
@@ -173,14 +166,15 @@ public final class Controller extends HttpServlet {
 				pw.println(text);
 			}
 		} else if ("requestMessageRevival".equals(action)) {
-			String messageId = (String) request.getSession().getAttribute(
-					"messageId");
+			String messageId = (String) request.getSession().getAttribute("messageId");
+
 			if (service.isMessageExpired(messageId)) {
-				String requestorEmail = request.getParameter("requestorEmail");
+				
 				String requestorName = request.getParameter("requestorName");
-				String requestReason = request.getParameter("requestReason");
-				service.createMessageRevivalRequest(messageId, requestorName,
-						requestorEmail, requestReason);
+				String requestfromMailR = request.getParameter("fromMailR");
+				String requestorEmail = request.getParameter("requestorEmail");				
+				String requestReason = request.getParameter("requestReason");				  
+				service.createRevivalRequest(messageId, requestorName, requestfromMailR, requestorEmail, requestReason);
 				response.sendRedirect("html/RevivalRequestSuccess.html");
 			}
 

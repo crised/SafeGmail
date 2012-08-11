@@ -11,20 +11,13 @@
 <script type="text/javascript">
 function validateForm()
 {
-	var validated = validatePlainText(document.getElementById("requestorName"), "Name");
-	if(validated)
-	{
-		validated = validateEmail(document.getElementById("requestorEmail"), "Email");
-		if(validated)
-		{
-			validated = validatePlainText(document.getElementById("requestReason"), "Reason");
-			if(validated)
-			{
-				document.forms["requestForm"].submit();
-			}
-		}
-	}
-	return false;
+	var validated1 = validatePlainText(document.getElementById("requestorName"), "Name");
+	var	validated2 = validateEmail(document.getElementById("requestorEmail"), "Email");
+	var validated3 = validateEmail(document.getElementById("fromMailR"), "fromMailR");
+	var	validated4 = validatePlainText(document.getElementById("requestReason"), "Reason");
+	
+	if(validated1 && validated2 && validated3 & validated4) document.forms["requestForm"].submit();
+	else return false;
 }
 
 function validatePlainText(htmlField, fieldName)
@@ -63,13 +56,17 @@ function validateEmail(htmlField, fieldName)
 <div id="content_header">
 <div id="site_content1">
 <div id="content">
-<h2><font color="red">Oops, you are a tad late. Message is expired and therefore, cannot be read now.</font></h2>
-	Please fill in the below form if you wish to request the sender of message to revive this message again.
+<h2><font color="red">For security reasons, this Message has expired.</font></h2>
+	<p>Please fill in the below form if you wish to issue a request to bring this message back.</p>
 	<form action="/SafeMail/MessageController?action=requestMessageRevival" method="post" name="requestForm">
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tr>
 				<td>Your Name: </td>
 				<td><input type='text' size="50" id="requestorName" name="requestorName"></input></td>
+			</tr>
+			<tr>
+				<td>Sender Email: </td>
+				<td><input type='text' size="50" id="fromMailR" name="fromMailR"></input></td>
 			</tr>
 			<tr>
 				<td>Your Email: </td>
@@ -78,7 +75,7 @@ function validateEmail(htmlField, fieldName)
 			<tr>
 				<td>Message Id: </td>
 				<td><label><%=session.getAttribute("messageId")%></label></td>
-			</tr>
+			</tr>								
 			<tr>
 				<td>Reason: </td>
 				<td><textarea rows="5" cols="100" id="requestReason" name="requestReason"></textarea></td>

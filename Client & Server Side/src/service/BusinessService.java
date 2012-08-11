@@ -2,13 +2,8 @@ package service;
 
 import java.sql.Timestamp;
 
-/**
- * @author Avi
- * 
- */
 public interface BusinessService {
-	public void createMessageRevivalRequest(String messageId,
-			String requestorName, String requestorEmail, String requestReason);
+	public void createRevivalRequest(String messageId, String requestorName, String requestFromMailR, String requestorEmail, String requestReason);
 	
 	public String getQuestion(String messageId);
 
@@ -20,7 +15,6 @@ public interface BusinessService {
 
 	public String receive(String ans, String messageId, boolean oldVersion);
 
-	public String send(String messageKey, String recipient, String question,
-			String ans, Float version, Timestamp timeToLive, String senderMail);
+	public String send(String messageKey, String fromMail, String toMail, String question, String ans, Timestamp timeToLive, Float version);
 	
 }

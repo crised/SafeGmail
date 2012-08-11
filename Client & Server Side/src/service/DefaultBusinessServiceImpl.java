@@ -12,13 +12,13 @@ import util.Util;
 
 
 import dao.JdbcMessageDaoImpl;
-import dao.JdbcReviveMessageRequestDaoImpl;
+import dao.JdbcReviveDaoImpl;
 import dao.JdbcUserDaoImpl;
 import dao.MessageDao;
-import dao.ReviveMessageRequestDao;
+import dao.ReviveDao;
 import dao.UserDao;
 import dom.MessageDO;
-import dom.MessageReviveRequestDO;
+import dom.ReviveDO;
 
 /**
  * @author Avi
@@ -27,24 +27,23 @@ import dom.MessageReviveRequestDO;
 public final class DefaultBusinessServiceImpl implements BusinessService {
 	private UserDao userDao;
 	private MessageDao messageDao;
-	private ReviveMessageRequestDao reviveMessageDao;
+	private ReviveDao reviveMessageDao;
 
 	public DefaultBusinessServiceImpl() {
 		this.userDao = new JdbcUserDaoImpl();
 		this.messageDao = new JdbcMessageDaoImpl();
-		this.reviveMessageDao = new JdbcReviveMessageRequestDaoImpl();
+		this.reviveMessageDao = new JdbcReviveDaoImpl();
 	}
-	
-	public void createMessageRevivalRequest(String messageId,
-			String requestorName, String requestorEmail, String requestReason) {
-		MessageDO message = getMessageDao().getMessageById(messageId);
-		MessageReviveRequestDO request = new MessageReviveRequestDO();
-		request.setMessageId(messageId);
-		request.setSenderEmail(message.getSenderMail());
-		request.setRequestorEmail(requestorEmail);
-		request.setRequestorName(requestorName);
-		request.setRequestReason(requestReason);
-		reviveMessageDao.createNewRequest(request);
+
+	public void createRevivalRequest(String messageId, String requestorName, String requestFromMailR, String requestorEmail, String requestReason) 
+	{
+		ReviveDO requestForm = new ReviveDO();
+		requestForm.setMessageId(messageId);
+		requestForm.setRequestorName(requestorName);
+		requestForm.setfromMailR(requestFromMailR);
+		requestForm.setRequestorEmail(requestorEmail);		
+		requestForm.setRequestReason(requestReason);
+		reviveMessageDao.createReviveRequest(requestForm);
 	}
 
 	/**
@@ -158,11 +157,10 @@ public boolean isValidAnswer(String ans, String messageId, boolean oldVersion) {
 	 * com.illuminati.mailvault.service.BusinessService#send(java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public String send(String messageKey, String recipient, String question,
-			String ans, Float version, Timestamp timeToLive, String senderMail) {
+	public String send(String messageKey, String fromMail, String toMail, String question, String ans, Timestamp timeToLive, Float version) {
 		String messageId = null;
-		ElGamalPublicKey puk = getUserDao().getPublicKey(recipient);
-		ElGamalPrivateKey pvk = getUserDao().getPrivateKey(recipient);
+		ElGamalPublicKey puk = getUserDao().getPublicKey(fromMail);
+		ElGamalPrivateKey pvk = getUserDao().getPrivateKey(fromMail);
 		byte[] hashedAnswer = null;
 		if (version == 0.0F) {
 			String answer = Normalizer.normalize(ans, Normalizer.Form.NFD);
@@ -172,12 +170,10 @@ public boolean isValidAnswer(String ans, String messageId, boolean oldVersion) {
 		}
 
 		try {
-			byte[] encryptedMessageKey = Util.encryptMessage(messageKey
-					.getBytes(), puk);
-			byte[] encryptedPrivateKey = Util.encryptPrivateKey(pvk,
-					hashedAnswer);
+			byte[] encryptedMessageKey = Util.encryptMessage(messageKey.getBytes(), puk);
+			byte[] encryptedPrivateKey = Util.encryptPrivateKey(pvk,hashedAnswer);
 			messageId = Util.getMessageId();
-			getMessageDao().store(messageId, encryptedMessageKey, encryptedPrivateKey, hashedAnswer, question, timeToLive, senderMail);
+			getMessageDao().store(messageId, encryptedPrivateKey, encryptedMessageKey, fromMail, toMail, question, hashedAnswer, timeToLive);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -194,9 +190,6 @@ public boolean isTTL(String messageId) {
 }
 		
 	
-	
-	
-
 	/**
 	 * @param messageDao
 	 *            the messageDao to set

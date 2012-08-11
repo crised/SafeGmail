@@ -27,9 +27,7 @@ public interface MessageDao {
 	 * @param encryptedPrivateKey
 	 * @param hashedAnswer
 	 */
-	public void store(String messageId, byte[] encryptedMessageKey,
-			byte[] encryptedPrivateKey, byte[] hashedAnswer,
-			String messageQuestion, Timestamp messageExpiresOn, String senderMail);
+	public void store(String messageId, byte[] encryptedPrivateKey, byte[] encryptedMessageKey, String fromMail, String toMail, String question, byte[] hashedAnswer, Timestamp timeToLive);
 
 	public void update(MessageDO message);
 }

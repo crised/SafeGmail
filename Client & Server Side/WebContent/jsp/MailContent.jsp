@@ -14,24 +14,24 @@
 		{
 			<% String reqMessageKey = request.getAttribute("messageKey").toString(); %>
 			<% String reqDecodeURI= request.getAttribute("DecodeURIComponent").toString(); %>
-			 var decodeURIComponent = '<%=reqDecodeURI%>';
+			 var URI = '<%=reqDecodeURI%>';
 		     var eText = document.getElementById("encryptedMailTxt");
 		     var messageKey = '<%=reqMessageKey%>';
-		     var text = CryptoJS.AES.decrypt(eText.value, messageKey);
-			 var decryptedMailTxtArea = document.getElementById("decryptedMailTxt");
-			 
-			 if (decodeURIComponent == 'true')
-				 {
-				 var string1 = hex2a(text.toString());
-				 decryptedMailTxtArea.value = decodeURIComponent(string1);
-				 }
-			 else{
-				 decryptedMailTxtArea.value = hex2a(text.toString());
-				
-			 }
+		     var decrypted = CryptoJS.AES.decrypt(eText.value, messageKey);
+             var decryptedMailTxtArea = document.getElementById("hello");
 
-			 showEncryptedDiv(false);
-		}
+             if (URI == 'true'){
+			 var text = decrypted.toString(CryptoJS.enc.Utf8); 			
+			 decryptedMailTxtArea.innerHTML = decodeURIComponent(text);
+			 showEncryptedDiv(2);
+			}
+
+            else{			
+			var text =hex2a(text.toString());   
+			decryptedMailTxtArea.value = text;
+			showEncryptedDiv(1);
+			}
+	}
 		
 		function hex2a(hex)
 		{
@@ -45,17 +45,26 @@
 
 		function showEncryptedDiv(showEncrypted)
 		{
-		     var decryptedMailDiv = document.getElementById("decryptedMail");
+		     var decryptedMailDiv1 = document.getElementById("decryptedMail1");
+	 	     var decryptedMailDiv2 = document.getElementByid("decyrptedMail2");
 		     var encryptedMailDiv = document.getElementById("encryptedMail");
-			 if(showEncrypted == true)
+			 if(showEncrypted == 2)
 			 {
-		     	decryptedMailDiv.style.display = "none";
-		     	encryptedMailDiv.style.display = "block";
-			 }	
+		     	decryptedMailDiv1.style.display = "none";
+			decryptedMailDiv2.style.display = "block";
+		     	encryptedMailDiv.style.display = "none";
+			 }
+			 if(showEncrypted ==1)
+			{
+			decryptedMailDiv1.style.display = "block";
+                        decryptedMailDiv2.style.display = "none";
+                        encryptedMailDiv.style.display = "none";
+			}
 			 else
 			 {
-		     	decryptedMailDiv.style.display = "block";
-		     	encryptedMailDiv.style.display = "none";
+		     	decryptedMailDiv1.style.display = "none";
+			decryptedMailDiv2.style.display = "none";
+		     	encryptedMailDiv.style.display = "block";
 			 }
 		}
 		
@@ -87,12 +96,19 @@
 							<input type="button" value="Show My Mail" onclick="showMailClickHandler()"/>
 						</div>
 					</div>
-					<div id="decryptedMail">
-						<label><b>Mail Content:</b></label><br>
-						<div align="center">
-							<textarea rows="22" cols="120" id="decryptedMailTxt" readonly="readonly"></textarea>
-							<input type="button" value="Back To Encrypted Text" onclick="showEncryptedDiv(true)"/>
-						</div>	
+					
+					<div id="decryptedMail1">
+					<label><b>Mail Content:</b></label><br>
+					<div align="center">
+					<textarea rows="22" cols="120" id="decryptedMailTxt" readonly="readonly"></textarea>
+					<input type="button" value="Back To Encrypted Text" onclick="showEncryptedDiv(true)"/>
+					</div>	
+					
+					<div id="decryptedMail2">
+						<label><b>Mail Content:</b></label><br><br>
+						<div id="hello" align="left">
+				         </div>
+	
 					</div>	
 				</div>
 			</div>

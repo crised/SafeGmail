@@ -26,8 +26,10 @@ public final class JdbcMessageDaoImpl implements MessageDao {
 				if (rs.next()) {
 					message = new MessageDO();
 					message.setMessageId(messageId);
-					message.setPrvKey(rs.getBytes("prvKey"));
 					message.setMessageKey(rs.getBytes("messageKey"));
+					message.setPrvKey(rs.getBytes("prvKey"));
+					message.setfromMail(rs.getString("fromMail"));
+					message.settoMail(rs.getString("toMail"));				
 					message.setQuestion(rs.getString("question"));
 					message.setAnswer(rs.getBytes("answer"));
 					message.setExpired(rs.getBoolean("expired"));
@@ -86,11 +88,9 @@ public String getQuestion(String messageId) {
 		return null;
 	}
 
-	public void store(String messageId, byte[] encryptedMessageKey,
-			byte[] encryptedPrivateKey, byte[] hashedAnswer,
-			String messageQuestion, Timestamp messageExpiresOn, String senderMail) {
+	public void store(String messageId, byte[] encryptedPrivateKey, byte[] encryptedMessageKey, String fromMail, String toMail, String question, byte[] hashedAnswer, Timestamp timeToLive) {
 		// check if user exists in database
-		String query = "INSERT INTO Message (messageId, prvKey, messageKey, question, answer, expired, timeToLive, senderMail) VALUES (?, ?, ?, ?, ?, false, ?, ?)";
+		String query = "INSERT INTO Message (messageId, prvKey, messageKey, fromMail, toMail, question, answer, expired, timeToLive) VALUES (?, ?, ?, ?, ?, ?, ?, false, ?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -100,10 +100,11 @@ public String getQuestion(String messageId) {
 			ps.setString(1, messageId);
 			ps.setBytes(2, encryptedPrivateKey);
 			ps.setBytes(3, encryptedMessageKey);
-			ps.setString(4, messageQuestion);
-			ps.setBytes(5, hashedAnswer);
-			ps.setTimestamp(6, messageExpiresOn);
-			ps.setString(7, senderMail);
+			ps.setString(4, fromMail);
+			ps.setString(5, toMail);
+			ps.setString(6, question);
+			ps.setBytes(7, hashedAnswer);
+			ps.setTimestamp(8, timeToLive);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
