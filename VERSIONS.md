@@ -20,3 +20,7 @@ Server side
 
 0.2 - July 25 
 Added version retrieving from extension, canonization support.
+
+0.3 - August 14
+Added expiration functionality, fromMail, toMail.
+E-mail is shown in HTML.
