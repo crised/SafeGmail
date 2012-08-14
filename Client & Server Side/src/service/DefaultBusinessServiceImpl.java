@@ -180,9 +180,9 @@ public boolean isValidAnswer(String ans, String messageId, boolean oldVersion) {
 		return messageId;
 	}
 
-public boolean isTTL(String messageId) {
+public boolean isver1 (String messageId) {
 		MessageDO message = messageDao.getMessageById(messageId);
-		if(message.getTimeToLive() != null)
+		if(message.getfromMail() != "empty.server")
 		{
 			return true;
 		}

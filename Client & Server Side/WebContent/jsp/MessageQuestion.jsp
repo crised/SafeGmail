@@ -32,11 +32,7 @@ function removeSubmitButton()
 
 function canonicalString(str)
 {
-    return trimString(str).toLowerCase();
-}
-function trimString(str) 
-{
-    return str.replace(/\s/g, "");
+    return str.replace(/\s/g, "").toLowerCase();
 }
 
 function checkEnter(e)

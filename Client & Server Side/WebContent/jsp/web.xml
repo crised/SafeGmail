@@ -8,7 +8,7 @@
 		<description>messagecontroller</description>
 		<display-name>Controller</display-name>
 		<servlet-name>Controller</servlet-name>
-		<servlet-class>com.illuminati.safemail.web.Controller</servlet-class>
+		<servlet-class>web.Controller</servlet-class>
 		<load-on-startup>1</load-on-startup>
 		<init-param>
 			<param-name>sysuser</param-name>

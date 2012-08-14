@@ -1,10 +1,6 @@
 package web;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.sql.Timestamp;
@@ -14,7 +10,6 @@ import java.util.StringTokenizer;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -88,10 +83,14 @@ public final class Controller extends HttpServlet {
 				if (config.getInitParameter("sysuser").equals(user) && config.getInitParameter("syspass").equals(pass)) {
 					String messageKey = request.getParameter("messageKey");
 					String fromMail = request.getParameter("senderId");
+					if (fromMail == null) fromMail="empty.server";
 					String toMail = request.getParameter("recepientId");
+					if (toMail == null) toMail="empty.server";
 					String question =  request.getParameter("question");
 					String answer = request.getParameter("answer");
-					float version = Util.convertToFloat(request.getParameter("version"), 0.0F);
+					String versionS = request.getParameter("version");
+					if (versionS == null) versionS="0";
+					float version = Util.convertToFloat(versionS, 0.0F);
 					version = version < 0.4 ? 0.0F : version;
 					int TTL = Util.convertToInteger(request.getParameter("TTL"), -1);
 					if (TTL == -1) {TTL = 120;} // 5 days expiration by default
@@ -109,16 +108,12 @@ public final class Controller extends HttpServlet {
 		else if ("getQuestion".equals(action)) {
 			String messageId = request.getParameter("messageId");
 			request.getSession().setAttribute("messageId", messageId);
-			boolean messageExpired = service.isMessageExpired(messageId);
-			if (messageExpired) {
+			
+			if (service.isMessageExpired(messageId)) {
 				response.sendRedirect("jsp/ExpiredMessage.jsp");
 				return;
-				//request.getSession().setAttribute("messageId", messageId);
-				//request.getRequestDispatcher("jsp/ExpiredMessage.jsp").forward(request, response);
-				//return;
-				//throw new RuntimeException("Message is expired and hence, cannot be read.");
 			}
-
+			
 			request.getSession().setAttribute("messageId", messageId);
 			request.setAttribute("messageQuestion", service.getQuestion(messageId));
 			request.getSession().setAttribute("answerTries", 0);
@@ -131,7 +126,7 @@ public final class Controller extends HttpServlet {
 
 			if (validAnswer) {
 				request.setAttribute("messageKey", service.receive(userAnswer, messageId, false));
-				request.setAttribute("DecodeURIComponent", service.isTTL(messageId));
+				//request.setAttribute("DecodeURIComponent", service.isver1(messageId));
 				request.getRequestDispatcher("jsp/MailContent.jsp").forward(request, response);
 			} else {
 				String nonCanonicalUserAnswer = null;
@@ -144,6 +139,7 @@ public final class Controller extends HttpServlet {
 
 				if (validAnswer) {
 					request.setAttribute("messageKey", service.receive(nonCanonicalUserAnswer, messageId, true));
+					//request.setAttribute("DecodeURIComponent", service.isver1(messageId));
 					request.getRequestDispatcher("jsp/MailContent.jsp").forward(request, response);
 				} else {
 					request.setAttribute("messageQuestion", service.getQuestion(messageId));
@@ -152,20 +148,8 @@ public final class Controller extends HttpServlet {
 					request.getRequestDispatcher("jsp/MessageQuestion.jsp").forward(request, response);
 				}
 			}	
-		} else if ("getLatestJS".equals(action)) {
-			System.out.println(request.getParameter("extVersion"));
-			String fileName = "/WEB-INF/js/safegmailbootstrap.js";
-			ServletContext context = config.getServletContext();
-			InputStream inputStream = context.getResourceAsStream(fileName);
-			response.setContentType("text/javascript");
-			InputStreamReader isr = new InputStreamReader(inputStream);
-			BufferedReader reader = new BufferedReader(isr);
-			PrintWriter pw = response.getWriter();
-			String text = null;
-			while ((text = reader.readLine()) != null) {
-				pw.println(text);
-			}
-		} else if ("requestMessageRevival".equals(action)) {
+		} 
+		else if ("requestMessageRevival".equals(action)) {
 			String messageId = (String) request.getSession().getAttribute("messageId");
 
 			if (service.isMessageExpired(messageId)) {

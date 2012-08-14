@@ -11,7 +11,7 @@ public interface BusinessService {
 
 	public boolean isValidAnswer(String ans, String messageId,boolean oldVersion);
 	
-	public boolean isTTL(String messageId);
+	public boolean isver1(String messageId);
 
 	public String receive(String ans, String messageId, boolean oldVersion);
 
