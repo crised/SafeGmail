@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Message Question</title>
-<link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
-<link rel="shortcut icon" href="jsp/img/icon.png">
+<link rel="stylesheet" type="text/css" href="http://www.safegmail.com:8080/SafeMail/jsp/css/styles.css">
+<link rel="shortcut icon" href="http://www.safegmail.com:8080/SafeMail/jsp/img/icon.png">
 </head>
-<script type="text/javascript" src="jsp/cryptojs/rollups/md5.js"></script>
+<script type="text/javascript" src="http://www.safegmail.com:8080/SafeMail/jsp/cryptojs/rollups/md5.js"></script>
 <script type="text/javascript">
 function submitForm()
 {
@@ -62,7 +62,7 @@ function checkEnter(e)
 <div id="logo"><div id="logo_text"></div></div></div><div id="content_header"></div>
 <div id="site_content">
     	<div id="content">
-			<form name="inputForm" action="MessageController?action=receive" method="post" onkeypress="return checkEnter(event)">
+			<form name="inputForm" action="http://www.safegmail.com:8080/SafeMail/MessageController?action=receive" method="post" onkeypress="return checkEnter(event)">
 						<input type="hidden" name="userAnswer" id="userHashedAns"/>
 				<h1>Enter the answer for question to read mail content</h1>
 				<table align="center">

@@ -4,11 +4,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Expired Message</title>
-<link rel="stylesheet" type="text/css" href="../jsp/css/styles.css">
-<link rel="shortcut icon" href="../jsp/img/icon.png">
+<link rel="stylesheet" type="text/css" href="http://www.safegmail.com:8080/SafeMail/jsp/css/styles.css">
+<link rel="shortcut icon" href="http://www.safegmail.com:8080/SafeMail/jsp/img/icon.png">
 </head>
 <body>
-<script src="..//jsp/scripts/expiredmessage.js" type="text/javascript"></script>
+<script src="http://www.safegmail.com:8080/SafeMail/jsp/scripts/expiredmessage.js" type="text/javascript"></script>
 <div id="header">
 <div id="logo">
 </div>
@@ -20,7 +20,7 @@
 <div id="content">
 <h2><font color="red">For security reasons, this message has expired.</font></h2>
 	<p>Please fill in the below form to issue a request to bring this message back.</p>
-	<form action="jsp/SafeMail/MessageController?action=requestMessageRevival" method="post" name="requestForm">
+	<form action="http://www.safegmail.com:8080/SafeMail/MessageController?action=requestMessageRevival" method="post" name="requestForm">
 		<table cellspacing="0" cellpadding="0" border="0">
 			<tr>
 				<td>Your Name: </td>

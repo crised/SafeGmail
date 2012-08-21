@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Mail Content</title>
-<link rel="stylesheet" type="text/css" href="jsp/css/styles.css">
-<link rel="shortcut icon" href="jsp/img/icon.png">
+<link rel="stylesheet" type="text/css" href="http://www.safegmail.com:8080/SafeMail/jsp/css/styles.css">
+<link rel="shortcut icon" href="http://www.safegmail.com:8080/SafeMail/jsp/img/icon.png">
 </head>
-<script src="jsp/cryptojs/rollups/aes.js" type="text/javascript"></script>
+<script src="http://www.safegmail.com:8080/SafeMail/jsp/cryptojs/rollups/aes.js" type="text/javascript"></script>
 <script>
 <% String reqMessageKey = request.getAttribute("messageKey").toString(); %>
 var messageKey = '<%=reqMessageKey%>';
@@ -44,6 +44,6 @@ var messageKey = '<%=reqMessageKey%>';
 		</div>	
 	</div>
 </div>
-<script src="jsp/scripts/mailcontent.js" type="text/javascript"></script>
+<script src="http://www.safegmail.com:8080/SafeMail/jsp/scripts/mailcontent.js" type="text/javascript"></script>
 </body>
 </html>
